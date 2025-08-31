@@ -9,26 +9,29 @@ body {
 
 .login-container {
   align-items: center;  
-  max-width: 993px;
+  max-width: 900px;
   max-height: 682px;
   margin: 0 auto;
   padding: 2em;
-  border-radius: 8px;
-  background-color: rgba(97, 96, 96, 0.4); /* Fundo semi-transparente */
-  box-shadow: 0 0 12px 6px rgba(98, 97, 97, 0.5);
+  border-radius: 20px;
+  background-color: rgba(121, 121, 121, 0.42); /* Fundo semi-transparente */
+  box-shadow: 0 0 12px 6px rgba(121, 121, 121, 0.47);
 }
 
 .login-container h2 {
   text-align: justify;
-  margin-bottom: 1em;
+  margin-bottom: 0.9rem;
   color: #ffffff;
+}
+
+.login-container h2.senha {
+  margin-top: 3.5rem;
 }
 
 .login-container input {  
   width: 842px;
-  height: 77px;
+  height: 65px;
   padding: 0.6em;
-  margin-bottom: 1em;
   border: 1px rgba(74, 74, 74, 0.5) solid;
   border-radius: 2rem;
   background-color: rgba(74, 74, 74, 0.5);
@@ -40,13 +43,19 @@ body {
   border: none; 
   cursor: pointer; 
   color: #ffffff; 
-  font-size: 0.9rem; 
+  font-size: 1.5rem; 
   font-family: Arial, sans-serif; 
-  text-align: end;
+  text-align: left; 
+  text-decoration: none; 
   display: flex;
-  justify-content: end;
-  margin-left: 695px; 
-  margin-top: -80px;
+  margin-left: 640px; 
+  margin-top: -140px;
+  margin-bottom: 6rem;
+  outline: none;
+  transition: color 0.25s;
+  &:hover {
+    color: rgba(14, 14, 165, 0.4);
+  }
 }
 
 .login-container button{
@@ -57,21 +66,30 @@ body {
   border-radius: 9rem;
   background-color: rgba(94, 94, 94, 0.5);
   color: #ffffff;
-  font-size: 1.2em;
+  font-size: 1.4em;
   cursor: pointer;
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 .login-container button.login {
   margin-left: 350px;
-  margin-top: 1rem;
+  margin-top: 3rem;
   margin-bottom: 1.5rem;
   transition: background-color 0.25s;
   &:hover {
-    background-color: #3157C4;
+    background-color: rgba(14, 14, 165, 0.4);
   }
+}
+
+.login-container hr {
+  height: 3px;
+  width: 782px;
+  border: 1px solid rgba(190, 190, 195, 0.5);
+  background-color: rgba(190, 190, 195, 0.5);
+
 }
 
 .login-container button.google-login {
@@ -79,7 +97,7 @@ body {
     margin-bottom: 0;
     transition: background-color 0.25s;
     &:hover {
-     background-color: #3157C4;
+     background-color: rgba(14, 14, 165, 0.4);
     }
 
 }
@@ -88,7 +106,7 @@ body {
   margin-left: 500px;
   transition: background-color 0.25s;
   &:hover {
-    background-color: #3157C4;
+    background-color: rgba(14, 14, 165, 0.4);
   }
 }
 
@@ -101,6 +119,7 @@ body {
 
 .login-container .icon {
   margin-right: 0.5em;
+  color: #07194D;
 }
 
 .login-container .social-login button {

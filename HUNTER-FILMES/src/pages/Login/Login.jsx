@@ -42,7 +42,7 @@ const LoginScreen = () => {
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
         />
-        <h2>Senha</h2>
+        <h2 className='senha'>Senha </h2>
         <input
             type="password"
             value={senha}
@@ -60,7 +60,7 @@ const LoginScreen = () => {
             Google
         </button>
         <button  onClick={handleFacebookLogin} className="facebook-login">
-            <FaFacebook className='icon' />
+            <FaFacebook className='icon'  />
             Facebook
         </button>
         </div>        
