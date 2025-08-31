@@ -1,0 +1,33 @@
+.escolha-perfil {
+  text-align: center;
+  font-size: 3.5rem;
+}
+
+.perfil-opcoes {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+}
+
+.perfil-opcao {
+  border: 0;
+  padding: 16px;
+  margin: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.perfil-opcao:hover {
+  transform: scale(1.05);
+}
+
+.perfil-opcao img {
+  width: 275px;
+  height: 275px;
+} 
+
+.perfil-opcao.selecionado {
+  border-color: #007bff;
+  color: #e7f0ff;
+}  

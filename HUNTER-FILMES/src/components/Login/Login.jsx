@@ -1,12 +1,13 @@
-import {FaGoogle, FaFacebook} from 'react-icons/fa';
 import React, { useState } from 'react';
+import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import './Login.css';
 import Cadastro from '../Cadastros/Cadastro';
 
-const LoginScreen = () => {
+const LoginScreen = ({ onLoginSuccess }) => {
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isCadastro, setIsCadastro] = useState(false);
 
   const handleLogin = () => {
     setLoading(true);
@@ -15,21 +16,24 @@ const LoginScreen = () => {
     setTimeout(() => {
       console.log('Login:', { usuario, senha });
       setLoading(false);
-      // Aqui você faria a integração com sua API
+      
+      if (usuario === 'teste' && senha === '123') { // Exemplo simples de validação
+        onLoginSuccess();
+      } else {
+        alert('Usuário ou senha inválidos!');
+      }
     }, 1000);
   };
 
   const handleGoogleLogin = () => {
     console.log('Login com Google');
-    // Integração com Google OAuth
+    // Depois de um login bem-sucedido, chame onLoginSuccess()
   };
 
   const handleFacebookLogin = () => {
     console.log('Login com Facebook');
-    // Integração com Facebook Login
+    // Depois de um login bem-sucedido, chame onLoginSuccess()
   };
-
-  const [isCadastro, setIsCadastro] = useState(false);
 
   const handleCadastro = () => {
     setIsCadastro(true);
@@ -42,7 +46,6 @@ const LoginScreen = () => {
   return (
     <>
       {isCadastro ? (
-        // Se isCadastro for verdadeiro, renderiza o componente Cadastro
         <Cadastro onVoltar={handleVoltarParaLogin} />
       ) : (
         <div className="login-container">
