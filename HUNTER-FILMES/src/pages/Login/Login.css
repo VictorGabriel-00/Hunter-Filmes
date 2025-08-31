@@ -1,0 +1,109 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #3157C4, #07194D);
+  color: #ffffff;
+  margin: 12em;
+  padding: 0;
+  align-items: center;
+}
+
+.login-container {
+  align-items: center;  
+  max-width: 993px;
+  max-height: 682px;
+  margin: 0 auto;
+  padding: 2em;
+  border-radius: 8px;
+  background-color: rgba(97, 96, 96, 0.4); /* Fundo semi-transparente */
+  box-shadow: 0 0 12px 6px rgba(98, 97, 97, 0.5);
+}
+
+.login-container h2 {
+  text-align: justify;
+  margin-bottom: 1em;
+  color: #ffffff;
+}
+
+.login-container input {  
+  width: 842px;
+  height: 77px;
+  padding: 0.6em;
+  margin-bottom: 1em;
+  border: 1px rgba(74, 74, 74, 0.5) solid;
+  border-radius: 2rem;
+  background-color: rgba(74, 74, 74, 0.5);
+  margin-bottom: 0;
+}
+
+.login-container button.cadastro{
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: #ffffff; 
+  font-size: 0.9rem; 
+  font-family: Arial, sans-serif; 
+  text-align: end;
+  display: flex;
+  justify-content: end;
+  margin-left: 695px; 
+  margin-top: -80px;
+}
+
+.login-container button{
+  width: 200px;
+  height: 60px;
+  padding: 0.9em;
+  border: none;
+  border-radius: 9rem;
+  background-color: rgba(94, 94, 94, 0.5);
+  color: #ffffff;
+  font-size: 1.2em;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.login-container button.login {
+  margin-left: 350px;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.25s;
+  &:hover {
+    background-color: #3157C4;
+  }
+}
+
+.login-container button.google-login {
+    margin-left: 200px;
+    margin-bottom: 0;
+    transition: background-color 0.25s;
+    &:hover {
+     background-color: #3157C4;
+    }
+
+}
+.login-container button.facebook-login {
+  margin-top: -62px;
+  margin-left: 500px;
+  transition: background-color 0.25s;
+  &:hover {
+    background-color: #3157C4;
+  }
+}
+
+.login-container .social-login {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
+
+}
+
+.login-container .icon {
+  margin-right: 0.5em;
+}
+
+.login-container .social-login button {
+  flex: 1;
+  margin: 0 0.5em;
+}
