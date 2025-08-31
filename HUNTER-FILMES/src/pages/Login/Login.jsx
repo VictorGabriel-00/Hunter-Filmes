@@ -1,6 +1,7 @@
 import {FaGoogle, FaFacebook} from 'react-icons/fa';
 import React, { useState } from 'react';
 import './Login.css';
+import Cadastro from '../Cadastros/Cadastro';
 
 const LoginScreen = () => {
   const [usuario, setUsuario] = useState('');
@@ -28,44 +29,54 @@ const LoginScreen = () => {
     // Integração com Facebook Login
   };
 
+  const [isCadastro, setIsCadastro] = useState(false);
+
   const handleCadastro = () => {
-    console.log('Redirecionando para cadastro');
-    // Navegação para tela de cadastro
+    setIsCadastro(true);
   };
 
-    return (
-        
+  const handleVoltarParaLogin = () => {
+    setIsCadastro(false);
+  };
+
+  return (
+    <>
+      {isCadastro ? (
+        // Se isCadastro for verdadeiro, renderiza o componente Cadastro
+        <Cadastro onVoltar={handleVoltarParaLogin} />
+      ) : (
         <div className="login-container">
-        <h2>Usuario</h2>
-        <input
+          <h2>Usuario</h2>
+          <input
             type="text"
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
-        />
-        <h2 className='senha'>Senha </h2>
-        <input
+          />
+          <h2 className='senha'>Senha </h2>
+          <input
             type="password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-        />
-        <button onClick={handleLogin} disabled={loading} className="login">
+          />
+          <button onClick={handleLogin} disabled={loading} className="login">
             {loading ? 'Entrando...' : 'Login'}
-        </button>
-        <button className="cadastro" onClick={handleCadastro}>
+          </button>
+          <button className="cadastro" onClick={handleCadastro}>
             Cadastrar-se
-        </button>
-        <hr />
-        <button  onClick={handleGoogleLogin} className="google-login">
+          </button>
+          <hr />
+          <button onClick={handleGoogleLogin} className="google-login">
             <FaGoogle className='icon' />
             Google
-        </button>
-        <button  onClick={handleFacebookLogin} className="facebook-login">
-            <FaFacebook className='icon'  />
+          </button>
+          <button onClick={handleFacebookLogin} className="facebook-login">
+            <FaFacebook className='icon' />
             Facebook
-        </button>
-        </div>        
-        
-    );
+          </button>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default LoginScreen;
