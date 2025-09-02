@@ -1,6 +1,6 @@
 package com.hunterFilmes.demo.Dto;
 
-import org.antlr.v4.runtime.misc.NotNull;
+import jakarta.annotation.Nullable;
 
-public record UsuarioDto(@NotNull String name, @NotNull String email , @NotNull String password, @NotNull String dataNascimento) {
+public record UsuarioDto(@Nullable String nome, @Nullable String email , @Nullable String senha, @Nullable String dataNascimento) {
 }
