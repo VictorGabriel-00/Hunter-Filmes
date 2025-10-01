@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Cadastro.css';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
+import {useOutletContext, useNavigate } from 'react-router-dom';
 
 const Cadastro = () => {
   const [Usuario, setUsuario] = useState('');
@@ -9,17 +10,21 @@ const Cadastro = () => {
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [loading, setLoading] = useState(false);
-  
-  
+  const { handleCadastroSuccess } = useOutletContext();
 
   const handleCadastro = () => {
     setLoading(true);
 
-    // Simular chamada de API
     setTimeout(() => {
       console.log('Cadastro:', { Usuario, email, nascimento, senha, confirmarSenha });
       setLoading(false);
-      // Aqui você faria a integração com sua API
+
+      if (Usuario !== '' && email !== '' && nascimento !== '' && senha !== '' && confirmarSenha === senha ) {
+        handleCadastroSuccess(); 
+      } else {
+        alert('Preencha todos os campos corretamente!');
+      }
+      
     }, 1000);
   };
 

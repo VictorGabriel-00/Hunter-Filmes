@@ -1,7 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import './Escolha-perfil.css';
+import CriarPerfil from '../CriarPerfil/Criar-perfil.jsx';
 
-const EscolhaPerfil = ({ perfis, imagensPerfis, perfilSelecionado, onPerfilClick }) => {
+const EscolhaPerfil = () => {
+  const { perfis, imagensPerfis, perfilSelecionado, handlePerfilClick } = useOutletContext();
+  const [isCriarPerfil, setIsCriarPerfil] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCriaPerfil = () => {
+    setIsCriarPerfil(true);
+    
+  };
+
+  const handleVoltarPerfis = () => {
+    setIsCriarPerfil(false);
+  };
+
+  if (isCriarPerfil) {
+    return <CriarPerfil onVoltar={handleVoltarPerfis} />;
+  }
+
   return (
     <div className="escolha-perfil">
       <h2>Escolha seu perfil</h2>
@@ -10,7 +29,7 @@ const EscolhaPerfil = ({ perfis, imagensPerfis, perfilSelecionado, onPerfilClick
           <div
             key={perfil}
             className={`perfil-opcao ${perfilSelecionado === perfil ? 'selecionado' : ''}`}
-            onClick={() => onPerfilClick(perfil)}
+            onClick={() => handlePerfilClick(perfil)}
           >
             <img 
               src={imagensPerfis[perfil]} 
@@ -20,10 +39,15 @@ const EscolhaPerfil = ({ perfis, imagensPerfis, perfilSelecionado, onPerfilClick
                 e.target.src = '/assets/perfil-default.jpg';
               }}
             />
-            
             <p>{perfilSelecionado === perfil ? 'Selecionado' : perfil}</p>
           </div>
         ))}
+      </div>
+      <div className="criar-perfil-container">
+        <button onClick={handleCriaPerfil} className="criar-perfil-button"> 
+          +
+        </button>
+        <p className="criar-perfil">Adicionar perfil</p>
       </div>
     </div>
   );

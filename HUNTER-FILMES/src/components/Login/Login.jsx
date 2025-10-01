@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import './Login.css';
 import Cadastro from '../Cadastros/Cadastro';
 
-const LoginScreen = ({ onLoginSuccess }) => {
+const LoginScreen = () => {
+  const { handleLoginSuccess } = useOutletContext(); 
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
@@ -11,14 +13,13 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
   const handleLogin = () => {
     setLoading(true);
-    
-    // Simular chamada de API
+      
     setTimeout(() => {
       console.log('Login:', { usuario, senha });
       setLoading(false);
       
-      if (usuario === 'teste' && senha === '123') { // Exemplo simples de validação
-        onLoginSuccess();
+      if (usuario === 'teste' && senha === '123') {
+        handleLoginSuccess(); 
       } else {
         alert('Usuário ou senha inválidos!');
       }
@@ -27,12 +28,12 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
   const handleGoogleLogin = () => {
     console.log('Login com Google');
-    // Depois de um login bem-sucedido, chame onLoginSuccess()
+    handleLoginSuccess();
   };
 
   const handleFacebookLogin = () => {
     console.log('Login com Facebook');
-    // Depois de um login bem-sucedido, chame onLoginSuccess()
+    handleLoginSuccess();
   };
 
   const handleCadastro = () => {

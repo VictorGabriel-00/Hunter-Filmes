@@ -1,10 +1,11 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import AppRoutes from './pages/Routes.jsx'; // 👈 Importa o novo roteador
+import './index.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    {/* O AppRoutes agora é o ponto de partida do app */}
+    <AppRoutes /> 
+  </React.StrictMode>,
+);

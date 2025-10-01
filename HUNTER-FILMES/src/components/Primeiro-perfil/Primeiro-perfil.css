@@ -1,0 +1,35 @@
+.criar-perfil-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+}
+
+.criar-perfil-container h2 {
+  margin-top: -50px;
+  margin-bottom: 15rem;
+}
+
+.criar-perfil-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 200px;
+  height: 190px;
+  padding: 20px;
+  font-size: 9rem;
+  background-color: #051134;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  transition: background-color 0.3s;
+}
+.criar-perfil-button:hover {
+  background-color: #0a1f4b;
+}
+.criar-perfil{
+  font-size: 1.8rem;
+  color: white;
+  margin-top: 20px;
+}
