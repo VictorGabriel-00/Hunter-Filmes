@@ -20,6 +20,15 @@ public class Serie {
     private String titulo;
     private String descricao;
     private String anoLancamento;
+    private int temporadas;
+
+    public int temporadas() {
+        return temporadas;
+    }
+
+    public void setTemporadas(int temporadas) {
+        this.temporadas = temporadas;
+    }
 
     public UUID id_serie() {
         return id_serie;

@@ -1,11 +1,9 @@
 package com.hunterFilmes.demo.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import com.hunterFilmes.demo.Model.Pagamento;
 
 import java.util.UUID;
 
@@ -18,6 +16,9 @@ public class Plano {
     private String nome;
     private Float preco;
     private String descricao;
+
+    @OneToOne
+    private Pagamento pagamento;
 
     public UUID id_plano() {
         return id_plano;
