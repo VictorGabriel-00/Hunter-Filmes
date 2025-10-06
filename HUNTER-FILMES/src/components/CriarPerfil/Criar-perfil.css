@@ -1,0 +1,110 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.503);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.criar-perfil-page {
+    display: flex;
+    margin-top: 3rem;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+    height: 35rem;
+    width: 30rem;
+    background-color: #0e1425d3;
+    border-radius: 3%;  
+}
+
+.avatar-placeholder {
+  position: relative;   
+  display: flex;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  height: 13rem;
+  background-color: #33353D;
+  font-size: 10rem;
+  border-radius: 2%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  overflow: hidden; 
+}
+
+.avatar-placeholder:hover {
+  background-color: #484b5d;
+}
+
+.avatar-placeholder input[type="file"] {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; 
+    cursor: pointer;
+    z-index: 10; 
+}
+
+.avatar-placeholder img {
+  width: 13rem;
+  height: 13rem;
+  border-radius: 2%;
+}
+
+.texto-adicionar-foto {
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-top: 0.7rem;
+}
+
+.campo-nome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 1.2rem;
+    padding: 10px;
+    font-size: 1.5rem;
+}
+
+.campo-nome input {
+    margin-top: 1.5rem;
+    width: 23rem;
+    padding: 5px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 200px;
+    background-color: #33353D;
+    color: white;
+}
+
+.criar {
+    display: block;
+    justify-content: center;
+    justify-self: center;
+    margin-top: 1.5rem;
+    width: 30%;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 20px;
+    background-color: #33353D;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.criar:hover {
+  background-color: #484b5d;
+}

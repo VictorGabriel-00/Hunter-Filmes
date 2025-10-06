@@ -1,6 +1,7 @@
 .escolha-perfil {
+  margin-top: -9rem;
   text-align: center;
-  font-size: 3.5rem;
+  font-size: 3rem;
 }
 
 .perfil-opcoes {
@@ -18,49 +19,57 @@
   transition: transform 0.2s;
 }
 
-.perfil-opcao:hover {
+.perfil-opcao:hover { 
   transform: scale(1.05);
 }
 
 .perfil-opcao img {
-  width: 275px;
-  height: 275px;
-  border-radius: 9px;
+  width: 13rem;
+  height: 13rem;
+  border-radius: 1rem;
 } 
 
 .perfil-opcao.selecionado {
   border-color: #007bff;
   color: #e7f0ff;
-}  
-.criar-perfil-container {
-   padding: 16px;
-    margin: 8px;
-    cursor: pointer;
-    transition: transform 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
-.criar-perfil-button {
+
+.Criar-perfil-container {
+  padding: 1rem;
+  margin: 3px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Criar-perfil-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  width: 200px;
-  height: 190px;
-  padding: 20px;
-  font-size: 9rem;
+  width: 8rem;
+  height: 8rem;
+  font-size: 5rem;
   background-color: #051134;
   color: white;
   border: none;
-  border-radius: 25px;
-  transition: background-color 0.3s;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
-.criar-perfil-button:hover {
+
+.Criar-perfil-button:hover {
   background-color: #0a1f4b;
+  transform: scale(1.05);
 }
-.criar-perfil{
-  font-size: 1.8rem;
-  color: white;
-  margin-top: 20px;
+
+
+.Criar-perfil-container:hover .Criar-perfil-button {
+  background-color: #0a1f4b;
+  transform: scale(1.05);
+}
+
+.Criar-perfil{
+  font-size: 1.2rem;
 }

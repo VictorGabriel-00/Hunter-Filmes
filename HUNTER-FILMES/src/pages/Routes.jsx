@@ -10,15 +10,18 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {}
         <Route path="/" element={<App />}> 
-            <Route index element={<LoginScreen />} />
-            <Route path="login" element={<LoginScreen />} />
-            <Route path="perfis" element={<EscolhaPerfil />} />
-        </Route>
+          
+          <Route index element={<LoginScreen />} />
+          <Route path="login" element={<LoginScreen />} />
+          <Route path="perfis" element={<EscolhaPerfil />} />
+          
+          <Route path="criar-perfil" element={<CriarPerfil />} />
+          <Route path="primeiro-perfil" element={<PrimeiroPerfil/>} />
 
-        <Route path="/criar-perfil" element={<CriarPerfil />} />
-        <Route path="/primeiro-perfil" element={<PrimeiroPerfil/>} />
-        <Route path="/cadastro" element={<LoginScreen />} />
+          <Route path="cadastro" element={<LoginScreen />} />
+        </Route>
 
         <Route path="*" element={<h1>404 - Página Não Encontrada</h1>} />
       </Routes>

@@ -1,122 +1,118 @@
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #3157C4, #07194D);
-  color: #ffffff;
-  margin: 12em;
-  padding: 0;
-  align-items: center;
-}
-
 .login-container {
   align-items: center;  
-  max-width: 900px;
-  max-height: 682px;
+  width: 50rem;
+  height: 30rem;
   margin: 0 auto;
   padding: 2em;
   border-radius: 20px;
-  background-color: rgba(121, 121, 121, 0.42); /* Fundo semi-transparente */
+  background-color: rgba(121, 121, 121, 0.42);
   box-shadow: 0 0 12px 6px rgba(121, 121, 121, 0.47);
 }
 
 .login-container h2 {
+  font-size: 1.8rem;
   text-align: justify;
   margin-bottom: 0.9rem;
   color: #ffffff;
 }
 
 .login-container h2.senha {
-  margin-top: 3.5rem;
+  margin-top: 2rem;
 }
 
 .login-container input {  
-  width: 842px;
-  height: 65px;
-  padding: 0.6em;
+  width: 95%;
+  height: 2rem;
+  padding: 0.6rem;
   border: 1px rgba(74, 74, 74, 0.5) solid;
-  border-radius: 2rem;
+  border-radius: 1rem;
   background-color: rgba(74, 74, 74, 0.5);
   margin-bottom: 0;
   font-size: 1.2rem;
   color: #ffffff;
 }
 
-.login-container button.cadastro{
+.login-container button.cadastro {
   background: none; 
   border: none; 
   cursor: pointer; 
   color: #ffffff; 
-  font-size: 1.5rem; 
+  font-size: 1rem; 
   font-family: Arial, sans-serif; 
   text-align: left; 
   text-decoration: none; 
   display: flex;
-  margin-left: 640px; 
-  margin-top: -140px;
+  margin-left: 75%; 
+  margin-top: -7rem;
   margin-bottom: 6rem;
   outline: none;
   transition: color 0.25s;
-  &:hover {
-    color: rgba(14, 14, 165, 0.4);
-  }
 }
 
-.login-container button{
-  width: 200px;
-  height: 60px;
-  padding: 0.9em;
+.login-container button.cadastro:hover {
+  color: rgba(14, 14, 165, 0.4);
+}
+
+.login-container button {
+  width: 25%;
+  height: 3rem;
+  padding: 0.9rem;
   border: none;
   border-radius: 9rem;
   background-color: rgba(94, 94, 94, 0.5);
   color: #ffffff;
-  font-size: 1.4em;
+  font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  align-items: center;
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
 }
 
 .login-container button.login {
-  margin-left: 350px;
-  margin-top: 3rem;
+  margin-left: 38%;
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
   transition: background-color 0.25s;
-  &:hover {
-    background-color: rgba(14, 14, 165, 0.4);
-  }
+}
+
+.login-container button.login:hover {
+  background-color: rgba(14, 14, 165, 0.4);
 }
 
 .login-container hr {
-  height: 3px;
-  width: 782px;
+  height: 0.2rem;
+  width: 98%;
   border: 1px solid rgba(190, 190, 195, 0.5);
   background-color: rgba(190, 190, 195, 0.5);
-
 }
 
 .login-container button.google-login {
-    margin-left: 200px;
-    margin-bottom: 0;
-    transition: background-color 0.25s;
-    &:hover {
-     background-color: rgba(14, 14, 165, 0.4);
-    }
-
-}
-.login-container button.facebook-login {
-  margin-top: -62px;
-  margin-left: 500px;
+  margin-left: 9rem;
+  margin-bottom: 0;
   transition: background-color 0.25s;
-  &:hover {
-    background-color: rgba(14, 14, 165, 0.4);
-  }
+}
+
+.login-container button.google-login:hover {
+  background-color: rgba(14, 14, 165, 0.4);
+}
+
+.login-container button.facebook-login {
+  margin-left: 60%;
+  margin-bottom: 0;
+  margin-top: -3rem;
+  transition: background-color 0.25s;
+}
+
+.login-container button.facebook-login:hover {
+  background-color: rgba(14, 14, 165, 0.4);
 }
 
 .login-container .social-login {
   display: flex;
   justify-content: space-between;
   margin-top: 1em;
-
 }
 
 .login-container .icon {

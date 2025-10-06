@@ -1,29 +1,27 @@
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #3157C4, #07194D);
-  color: #ffffff;
-  margin: 12em;
-  padding: 0;
-  align-items: center;
-}
-
 .cadastro-container {
   align-items: center;  
-  max-width: 900px;
-  max-height: 880px;
+  width: 55rem;
+  height: 50rem;
   margin: 0 auto;
   padding: 2em;
   border-radius: 20px;
-  background-color: rgba(121, 121, 121, 0.42); /* Fundo semi-transparente */
+  background-color: rgba(121, 121, 121, 0.42);
   box-shadow: 0 0 12px 6px rgba(121, 121, 121, 0.47);
 }
 
+.cadastro-container h2 {
+  font-size: 1.8rem;
+  text-align: justify;
+  margin-bottom: 0.9rem;
+  color: #ffffff;
+}
+
 .cadastro-container input {  
-  width: 850px;
-  height: 50px;
+  width: 95%;
+  height: 2rem;
   padding: 0.6em;
   border: 1px rgba(74, 74, 74, 0.5) solid;
-  border-radius: 2rem;
+  border-radius: 1rem;
   background-color: rgba(74, 74, 74, 0.5);
   margin-bottom: 0;
   font-size: 1.2rem;
@@ -31,11 +29,11 @@ body {
 }
 
 .cadastro-container input.data-nascimento {
-  width: 250px;
-  height: 20px;
+  width: 25%;
+  height: 1rem;
   padding: 0.6em;
   border: 1px rgba(74, 74, 74, 0.4) solid;
-  border-radius: 2rem;
+  border-radius: 1rem;
   background-color: rgba(74, 74, 74, 0.4);
   margin-bottom: 0;
   color: #f4f4f4;
@@ -46,15 +44,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
-.cadastro-container button{
-  width: 200px;
-  height: 60px;
-  padding: 0.9em;
+.cadastro-container button {
+  width: 25%;
+  height: 3rem;
+  padding: 0.9rem;
   border: none;
   border-radius: 9rem;
   background-color: rgba(94, 94, 94, 0.5);
   color: #ffffff;
-  font-size: 1.4em;
+  font-size: 1.4rem;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -62,41 +60,49 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-bottom: 1.5rem;
 }
 
- .cadastro-container button.cadastrar {
-  margin-left: 350px;
-  margin-top: 0rem;
+.cadastro-container button.cadastrar {
+  margin-left: 38%;
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
   transition: background-color 0.25s;
-  &:hover {
-    background-color: rgba(14, 14, 165, 0.4);
-  }
-} 
+}
+
+.cadastro-container button.cadastrar:hover {
+  background-color: rgba(14, 14, 165, 0.4);
+}
 
 .cadastro-container hr {
-  height: 3px;
-  width: 782px;
+  height: 0.2rem;
+  width: 98%;
   border: 1px solid rgba(190, 190, 195, 0.5);
   background-color: rgba(190, 190, 195, 0.5);
-
 }
 
 .cadastro-container button.google-login {
-    margin-left: 200px;
-    margin-bottom: 0;
-    transition: background-color 0.25s;
-    &:hover {
-     background-color: rgba(14, 14, 165, 0.4);
-    }
+  margin-left: 9rem;
+  margin-bottom: 0;
+  transition: background-color 0.25s;
+}
 
+.cadastro-container button.google-login:hover {
+  background-color: rgba(14, 14, 165, 0.4);
 }
 
 .cadastro-container button.facebook-login {
-  margin-top: -62px;
-  margin-left: 500px;
+  margin-left: 60%;
+  margin-bottom: 0;
+  margin-top: -3rem;
   transition: background-color 0.25s;
-  &:hover {
-    background-color: rgba(14, 14, 165, 0.4);
-  }
+}
+
+.cadastro-container button.facebook-login:hover {
+  background-color: rgba(14, 14, 165, 0.4);
+}
+
+.cadastro-container .social-login {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1em;
 }
 
 .cadastro-container .icon {
