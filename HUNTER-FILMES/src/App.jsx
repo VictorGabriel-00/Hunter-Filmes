@@ -28,7 +28,7 @@ function App() {
     { id: 4, nome: 'Marcos', imagem: perfilMarcos },
   ], []);
 
-  // AGORA inicializa o usuário pré-cadastrado (depois de initialPerfis estar definido)
+  // Inicializa o usuário pré-cadastrado
   useEffect(() => {
     const users = JSON.parse(localStorage.getItem(USERS_LIST_KEY) || '[]');
   
@@ -67,11 +67,6 @@ function App() {
       try {
         const key = getStorageKey(storedId);
         const storedPerfis = localStorage.getItem(key);
-
-        // if (storedId === PRE_CADASTRADO_USER_ID && !storedPerfis) {
-        //   return inicialPerfis;
-        // }
-
         return storedPerfis ? JSON.parse(storedPerfis) : []; 
       } catch (e) {
         console.error("Erro ao carregar perfis do localStorage:", e);
@@ -81,6 +76,7 @@ function App() {
     return [];
   });
 
+  // Carrega perfis quando o componente monta
   useEffect(() => {
     const storedId = localStorage.getItem(LOGGED_IN_ID_KEY);
     if (storedId) {
@@ -98,43 +94,43 @@ function App() {
         } else if (storedId === PRE_CADASTRADO_USER_ID) {
             // Se for o pré-cadastrado E NÃO tem perfis no localStorage, usa os iniciais e SALVA
             loadedPerfis = inicialPerfis;
-            localStorage.setItem(key, JSON.stringify(inicialPerfis)); // Salva agora
+            localStorage.setItem(key, JSON.stringify(inicialPerfis));
             console.log('Perfis iniciais do user123 sincronizados na montagem');
         }
 
         if (loadedPerfis.length > 0) {
-            // Evita loop infinito: só atualiza se a lista atual for diferente
-            if (listaPerfis.length !== loadedPerfis.length || JSON.stringify(listaPerfis) !== JSON.stringify(loadedPerfis)) {
-                setListaPerfis(loadedPerfis);
-            }
+            setListaPerfis(loadedPerfis);
         }
         
     } else {
         setIsLoggedIn(false);
         setUserId(null);
     }
-}, [inicialPerfis]);
+  }, [inicialPerfis]);
 
+  // Sincroniza listaPerfis com localStorage automaticamente
   useEffect(() => {
-    const storedId = localStorage.getItem(LOGGED_IN_ID_KEY);
-    const key = getStorageKey(storedId);
-    const storedPerfis = localStorage.getItem(key);
-
-    if (userId === PRE_CADASTRADO_USER_ID) {
-       if (!storedPerfis) {
-          localStorage.setItem(key, JSON.stringify(inicialPerfis));
-          setListaPerfis(inicialPerfis);
-          console.log('Perfis iniciais salvos para o usuário pré-cadastrado');
-       }else if (listaPerfis.length === 0 && JSON.parse(storedPerfis).length > 0) {
-          setListaPerfis(JSON.parse(storedPerfis));
-          console.log('Recarregando listaPerfis do localStorage');
-      }
+    if (userId && listaPerfis.length > 0) {
+      const key = getStorageKey(userId);
+      localStorage.setItem(key, JSON.stringify(listaPerfis));
+      console.log('✅ Perfis sincronizados no localStorage:', listaPerfis);
     }
   }, [listaPerfis, userId]);
 
-  const updatePerfis = (newPerfis) => {
-    console.log('Atualizando perfis para:', newPerfis);
+  const updatePerfis = (newPerfis, targetUserId = null) => {
+    const userIdToUse = targetUserId || userId;
+    
+    console.log('Atualizando perfis para userId:', userIdToUse);
+    console.log('Novos perfis:', newPerfis);
+    
     setListaPerfis(newPerfis);
+    
+    // Salva no localStorage imediatamente
+    if (userIdToUse) {
+      const key = getStorageKey(userIdToUse);
+      localStorage.setItem(key, JSON.stringify(newPerfis));
+      console.log('💾 Perfis salvos no localStorage com key:', key);
+    }
   };
 
   const adicionarNovoPerfil = (novoPerfil) => { 
@@ -168,8 +164,8 @@ function App() {
   const handleLoginSuccess = () => {
     let newUserId = localStorage.getItem(LOGGED_IN_ID_KEY);
     
-    console.log('handleLoginSuccess - userId do localStorage:', newUserId);
-    console.log('PRE_CADASTRADO_USER_ID esperado:', PRE_CADASTRADO_USER_ID);
+    console.log('🔐 handleLoginSuccess - userId:', newUserId);
+    console.log('PRE_CADASTRADO_USER_ID:', PRE_CADASTRADO_USER_ID);
     
     setUserId(newUserId);
     setIsLoggedIn(true);
@@ -178,27 +174,28 @@ function App() {
     const storedPerfis = localStorage.getItem(key);
     
     console.log('Buscando perfis com key:', key);
-    console.log('Perfis encontrados no localStorage:', storedPerfis);
+    console.log('Perfis encontrados:', storedPerfis);
     
     let loadedPerfis;
     if (storedPerfis) {
       loadedPerfis = JSON.parse(storedPerfis);
-      console.log('Perfis carregados do localStorage:', loadedPerfis);
+      console.log('✅ Perfis carregados do localStorage:', loadedPerfis);
     } else if (newUserId === PRE_CADASTRADO_USER_ID) {
-      console.log('Usuario pre-cadastrado detectado! Carregando perfis iniciais...');
+      console.log('👤 Usuario pre-cadastrado detectado! Carregando perfis iniciais...');
       loadedPerfis = inicialPerfis;
       localStorage.setItem(key, JSON.stringify(inicialPerfis));
     } else {
-      console.log('Nenhum perfil encontrado e nao e usuario pre-cadastrado');
+      console.log('❌ Nenhum perfil encontrado');
+      loadedPerfis = [];
     }
 
     if (!loadedPerfis || loadedPerfis.length === 0) {
-      console.log('Nenhum perfil encontrado, redirecionando para criar primeiro perfil');
-      updatePerfis([]);
+      console.log('➡️ Redirecionando para criar primeiro perfil');
+      setListaPerfis([]);
       navigate('/primeiro-perfil');
     } else {
-      console.log('Perfis carregados com sucesso:', loadedPerfis);
-      updatePerfis(loadedPerfis);
+      console.log('➡️ Redirecionando para lista de perfis');
+      setListaPerfis(loadedPerfis);
       navigate('/perfis'); 
     }
     
@@ -208,11 +205,18 @@ function App() {
   const handleCadastroSuccess = () => {
     const newUserId = `user_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
     
+    console.log('🆕 Criando novo usuário:', newUserId);
+    
     localStorage.setItem(LOGGED_IN_ID_KEY, newUserId);
+    
+    // Salva lista vazia especificamente para o NOVO usuário
+    const newUserKey = getStorageKey(newUserId);
+    localStorage.setItem(newUserKey, JSON.stringify([]));
+    console.log('💾 Lista vazia salva para novo usuário com key:', newUserKey);
+    
     setUserId(newUserId);
     setIsLoggedIn(true);
-    
-    updatePerfis([]);
+    setListaPerfis([]);
     
     navigate('/primeiro-perfil'); 
   };
@@ -222,28 +226,24 @@ function App() {
     
     setUserId(null);
     setIsLoggedIn(false);
-    setListaPerfis(inicialPerfis); 
+    setListaPerfis([]); 
     setPerfilSelecionado(null);
     
     navigate('/login');
   };
 
+  // Proteção de rotas
   useEffect(() => {
     if (!isLoggedIn) {
       if (location.pathname === '/perfis' || location.pathname === '/primeiro-perfil' || location.pathname === '/home') {
         navigate('/login');
       }
     }
-    
-    if (isLoggedIn && listaPerfis.length === 0 && location.pathname !== '/primeiro-perfil') {
-      navigate('/primeiro-perfil');
-    }
-  }, [isLoggedIn, location, navigate, listaPerfis.length]);
+  }, [isLoggedIn, location, navigate]);
 
   const handlePerfilClick = (perfilObj) => { 
     setPerfilSelecionado(perfilObj);
     console.log('Perfil selecionado:', perfilObj);
-    //navigate('/home');
   };  
 
   const contextValue = {
@@ -254,6 +254,7 @@ function App() {
     handlePerfilClick,
     handleCadastroSuccess,
     adicionarNovoPerfil,
+    handleLogout,
     resetPerfisAndAddFirst,
   };
 
