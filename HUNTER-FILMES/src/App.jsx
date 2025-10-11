@@ -21,7 +21,7 @@ function App() {
   const [perfilSelecionado, setPerfilSelecionado] = useState(null);
 
   // Define os perfis iniciais ANTES de usar em qualquer lugar
-  const initialPerfis = useMemo(() => [
+  const inicialPerfis = useMemo(() => [
     { id: 1, nome: 'Vitu', imagem: perfilVito},
     { id: 2, nome: 'Raica', imagem: perfilRaica},
     { id: 3, nome: 'Priori', imagem: perfilPriori },
@@ -48,7 +48,7 @@ function App() {
       
       // Salva os perfis pré-cadastrados para este usuário
       const key = getStorageKey(PRE_CADASTRADO_USER_ID);
-      localStorage.setItem(key, JSON.stringify(initialPerfis));
+      localStorage.setItem(key, JSON.stringify(inicialPerfis));
       console.log('Perfis pre-cadastrados salvos para user123');
     } else if (precadastradoExists && !precadastradoExists.userId) {
       // Se o usuário existe mas não tem userId, adiciona
@@ -59,7 +59,7 @@ function App() {
       localStorage.setItem(USERS_LIST_KEY, JSON.stringify(updatedUsers));
       console.log('userId adicionado ao usuario pre-cadastrado');
     }
-  }, [initialPerfis]);
+  }, [inicialPerfis]);
 
   const [listaPerfis, setListaPerfis] = useState(() => {
     const storedId = localStorage.getItem(LOGGED_IN_ID_KEY);
@@ -68,9 +68,9 @@ function App() {
         const key = getStorageKey(storedId);
         const storedPerfis = localStorage.getItem(key);
 
-        if (storedId === PRE_CADASTRADO_USER_ID && !storedPerfis) {
-          return initialPerfis;
-        }
+        // if (storedId === PRE_CADASTRADO_USER_ID && !storedPerfis) {
+        //   return inicialPerfis;
+        // }
 
         return storedPerfis ? JSON.parse(storedPerfis) : []; 
       } catch (e) {
@@ -82,13 +82,52 @@ function App() {
   });
 
   useEffect(() => {
-    if (userId) {
-      try {
-        const key = getStorageKey(userId);
-        localStorage.setItem(key, JSON.stringify(listaPerfis));
-        console.log('Perfis salvos:', listaPerfis);
-      } catch (e) {
-        console.error("Erro ao salvar perfis no localStorage:", e);
+    const storedId = localStorage.getItem(LOGGED_IN_ID_KEY);
+    if (storedId) {
+        setUserId(storedId);
+        setIsLoggedIn(true);
+
+        const key = getStorageKey(storedId);
+        const storedPerfis = localStorage.getItem(key);
+        
+        let loadedPerfis = [];
+
+        if (storedPerfis) {
+            // Se já tem, carrega do localStorage
+            loadedPerfis = JSON.parse(storedPerfis);
+        } else if (storedId === PRE_CADASTRADO_USER_ID) {
+            // Se for o pré-cadastrado E NÃO tem perfis no localStorage, usa os iniciais e SALVA
+            loadedPerfis = inicialPerfis;
+            localStorage.setItem(key, JSON.stringify(inicialPerfis)); // Salva agora
+            console.log('Perfis iniciais do user123 sincronizados na montagem');
+        }
+
+        if (loadedPerfis.length > 0) {
+            // Evita loop infinito: só atualiza se a lista atual for diferente
+            if (listaPerfis.length !== loadedPerfis.length || JSON.stringify(listaPerfis) !== JSON.stringify(loadedPerfis)) {
+                setListaPerfis(loadedPerfis);
+            }
+        }
+        
+    } else {
+        setIsLoggedIn(false);
+        setUserId(null);
+    }
+}, [inicialPerfis]);
+
+  useEffect(() => {
+    const storedId = localStorage.getItem(LOGGED_IN_ID_KEY);
+    const key = getStorageKey(storedId);
+    const storedPerfis = localStorage.getItem(key);
+
+    if (userId === PRE_CADASTRADO_USER_ID) {
+       if (!storedPerfis) {
+          localStorage.setItem(key, JSON.stringify(inicialPerfis));
+          setListaPerfis(inicialPerfis);
+          console.log('Perfis iniciais salvos para o usuário pré-cadastrado');
+       }else if (listaPerfis.length === 0 && JSON.parse(storedPerfis).length > 0) {
+          setListaPerfis(JSON.parse(storedPerfis));
+          console.log('Recarregando listaPerfis do localStorage');
       }
     }
   }, [listaPerfis, userId]);
@@ -147,8 +186,8 @@ function App() {
       console.log('Perfis carregados do localStorage:', loadedPerfis);
     } else if (newUserId === PRE_CADASTRADO_USER_ID) {
       console.log('Usuario pre-cadastrado detectado! Carregando perfis iniciais...');
-      loadedPerfis = initialPerfis;
-      localStorage.setItem(key, JSON.stringify(initialPerfis));
+      loadedPerfis = inicialPerfis;
+      localStorage.setItem(key, JSON.stringify(inicialPerfis));
     } else {
       console.log('Nenhum perfil encontrado e nao e usuario pre-cadastrado');
     }
@@ -183,7 +222,7 @@ function App() {
     
     setUserId(null);
     setIsLoggedIn(false);
-    setListaPerfis(initialPerfis); 
+    setListaPerfis(inicialPerfis); 
     setPerfilSelecionado(null);
     
     navigate('/login');
