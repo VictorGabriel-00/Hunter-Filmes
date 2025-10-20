@@ -19,25 +19,37 @@ driver = webdriver.Chrome(options=chrome_options)
 try:
     # Acessar a URL
     url = "http://localhost:5173/"  # Ajuste a porta conforme necessário
+    driver.maximize_window()
     driver.get(url)
     
     # Aguardar a página carregar
     wait = WebDriverWait(driver, 10)
     
-    # Esperar o elemento 'usuario' estar presente
+    botaoCadastro = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cadastro')))
+    botaoCadastro.click()
+
     usuario = wait.until(EC.presence_of_element_located((By.ID, 'usuario')))
-    usuario.send_keys('teste@teste.com')
+    usuario.send_keys('teste')
     
-    # Esperar o elemento 'senha' estar presente
+    email = wait.until(EC.presence_of_element_located((By.ID,'email')))
+    email.send_keys('Victor@teste.com')
+
+
     senha = wait.until(EC.presence_of_element_located((By.ID, 'senha')))
     senha.send_keys('123')
-    
+
+    confirmaSenha = wait.until(EC.presence_of_element_located((By.ID, 'confirmarSenha')))
+    confirmaSenha.send_keys('123')
+
+    dataNascimento = wait.until(EC.presence_of_element_located((By.ID, 'nascimento')))
+    dataNascimento.send_keys('01/01/2000')
+
     # Encontrar e clicar no botão
-    botao = wait.until(EC.element_to_be_clickable((By.ID, 'loading')))
+    botao = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cadastrar')))
     botao.click()
     
     # Aguardar um pouco para ver o resultado
-    time.sleep(3)
+    time.sleep(5)
     
     print("Teste executado com sucesso!")
     

@@ -110,7 +110,7 @@ const Login = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
-          <button onClick={handleLogin} disabled={loading} className="login">
+          <button id="login" onClick={handleLogin} disabled={loading} className="login">
             {loading ? 'Entrando...' : 'Login'}
           </button>
           <button className="cadastro" onClick={handleCadastro}>
