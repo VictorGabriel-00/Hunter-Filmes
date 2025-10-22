@@ -94,6 +94,7 @@ const CriarPerfil = ({ onVoltar, onPerfilCriado, isPrimeiroPerfil = false }) => 
         <div className="campo-nome">
           <label>Nome</label>
           <input
+            id="nomePerfil"
             type="text"
             value={nomePerfil}
             onChange={(e) => setNomePerfil(e.target.value)}

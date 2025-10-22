@@ -42,14 +42,24 @@ try:
     confirmaSenha.send_keys('123')
 
     dataNascimento = wait.until(EC.presence_of_element_located((By.ID, 'nascimento')))
-    dataNascimento.send_keys('01/01/2000')
+    dataNascimento.send_keys('12/05/2005')
 
     # Encontrar e clicar no botão
     botao = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cadastrar')))
     botao.click()
+
+    botaoPerfil = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'criar-perfil-button')))
+    botaoPerfil.click()
+
+    nome = wait.until(EC.presence_of_element_located((By.ID, 'nomePerfil')))
+    nome.send_keys('Victor')
+
+    botaoUsuario = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'criar')))
+    botaoUsuario.click()
+    
     
     # Aguardar um pouco para ver o resultado
-    time.sleep(5)
+    time.sleep(10)
     
     print("Teste executado com sucesso!")
     
