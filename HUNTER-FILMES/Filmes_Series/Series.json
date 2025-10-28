@@ -1,0 +1,44 @@
+[
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Gray_Banner.jpg",
+        "Title": "Grey's Anatomy",
+        "Ano": "2005",
+        "Genero": "Drama",
+        "Sinopse": "Drama centrado na vida pessoal e profissional de cinco estagiários e seus supervisores."
+    },
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Strang_Banner.jpg",
+        "Title": "Stranger Things",
+        "Ano": "2016",
+        "Genero": "Ficção científica, Terror",
+        "Sinopse": "Um grupo de crianças enfrenta eventos sobrenaturais em sua cidade natal."
+    },
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/La_Casa_Banner.jpg",
+        "Title": "La Casa de Papel",
+        "Ano": "2017",
+        "Genero": "Crime, Suspense",
+        "Sinopse": "Um grupo de assaltantes realiza roubos elaborados sob a liderança do Professor."
+    },
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/The_Witcher_Banner.jpg",
+        "Title": "The Witcher",
+        "Ano": "2019",
+        "Genero": "Fantasia, Ação",
+        "Sinopse": "Geralt de Rívia, um caçador de monstros solitário, luta para encontrar seu lugar em um mundo onde as pessoas são frequentemente mais perversas que as bestas."
+    },
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Breaking_Bad_Banner.jpeg",
+        "Title": "Breaking Bad",
+        "Ano": "2008",
+        "Genero": "Crime, Drama",
+        "Sinopse": "Um professor de química do ensino médio diagnosticado com câncer se volta para a fabricação e venda de metanfetamina para garantir o futuro financeiro de sua família."
+    },
+    {
+        "Banner": "~/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Brooklyn_banner.jpg",
+        "Title": "Brooklyn Nine-Nine",
+        "Ano": "2013",
+        "Genero": "Sitcom",
+        "Sinopse": "Um grupo de detetives de uma delegacia de polícia de Nova York lida com crimes enquanto mantém um senso de humor."
+    }
+]
