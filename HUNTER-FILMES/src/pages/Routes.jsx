@@ -5,6 +5,7 @@ import EscolhaPerfil from '../components/Escolha-perfil/Escolha-perfil.jsx';
 import CriarPerfil from '../components/CriarPerfil/Criar-perfil.jsx';
 import App from '../App.jsx'; 
 import PrimeiroPerfil from '../components/Primeiro-perfil/Primeiro-perfil.jsx';
+import TelaInicial from '../components/TelaInicial/Tela-inicial.jsx';
 
 const AppRoutes = () => {
   return (
@@ -19,7 +20,7 @@ const AppRoutes = () => {
           
           <Route path="criar-perfil" element={<CriarPerfil />} />
           <Route path="primeiro-perfil" element={<PrimeiroPerfil/>} />
-
+          <Route path="home" element={<TelaInicial />} />
           <Route path="cadastro" element={<LoginScreen />} />
         </Route>
 

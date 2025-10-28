@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { FaGoogle, FaFacebook } from 'react-icons/fa';
 import './Login.css';
 import Cadastro from '../Cadastros/Cadastro';
@@ -9,6 +9,7 @@ const LOGGED_IN_ID_KEY = 'loggedInUserId';
 
 const Login = () => {
   const { handleLoginSuccess, handleCadastroSuccess } = useOutletContext();
+  const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,7 @@ const Login = () => {
         
         setTimeout(() => {
           handleLoginSuccess();
+          navigate('/perfis');
         }, 500);
       } else {
         showMessage('Usuário ou senha inválidos!', false); 

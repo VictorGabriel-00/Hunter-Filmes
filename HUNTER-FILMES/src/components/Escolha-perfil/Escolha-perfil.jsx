@@ -32,7 +32,10 @@ const EscolhaPerfil = () => {
           <div
             key={perfil.id}
             className={`perfil-opcao ${isPerfilSelecionado(perfil) ? 'selecionado' : ''}`}
-            onClick={() => handlePerfilClick(perfil)}
+            onClick={() => {
+              handlePerfilClick(perfil);
+              navigate('/home');
+            }}
           >
             <img 
               src={perfil.imagem} 

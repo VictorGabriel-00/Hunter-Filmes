@@ -54,8 +54,12 @@ const Cadastro = () => {
                 
         localStorage.setItem(USERS_LIST_KEY, JSON.stringify([...storedUsers, newUser]));
                 
-        // Chamar a função de sucesso
-        handleCadastroSuccess(); 
+        // Chamar a função de sucesso e navegar para a tela inicial
+        handleCadastroSuccess();
+        showMessage('Cadastro realizado com sucesso! Redirecionando...', true);
+        setTimeout(() => {
+          navigate('/home');
+        }, 1000);
 
       } catch (e) {
         console.error("Erro ao salvar cadastro:", e);
