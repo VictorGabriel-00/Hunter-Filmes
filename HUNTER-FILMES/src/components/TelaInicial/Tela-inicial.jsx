@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+// Importar useLocation e useNavigate
+import { useOutletContext, useLocation, useNavigate } from 'react-router-dom';
 import { FaStar, FaBars, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Tela-inicial.css';
 import FilmesData from './Filmes.json';
@@ -16,17 +17,31 @@ const TelaInicial = () => {
   const { perfilSelecionado, handleLogout } = useOutletContext();
   const [menuAberto, setMenuAberto] = useState(false);
 
+  // --- MUDANÇAS AQUI ---
+  // Hooks de Roteamento
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathname = location.pathname;
+
+  // Determina o modo de exibição com base na rota
+  const modo = pathname.endsWith('/filmes') ? 'filmes' :
+               pathname.endsWith('/series') ? 'series' :
+               'home';
+  // --- FIM MUDANÇAS ---
+
+
   const toggleMenu = () => {
     setMenuAberto(!menuAberto);
   };
 
-  // Encontrar o filme "O Estranho Mundo de Jack" no JSON
-  const filmeJack = FilmesData.find(filme => filme.Title === "O Estranho Mundo de Jack");
-  const filmeDestaque = {
-    titulo: filmeJack.Title,
-    banner: corrigirCaminhoBanner(filmeJack.Banner),
-    sinopse: filmeJack.Sinopse
+  // --- MUDANÇA AQUI ---
+  // Função para navegar e fechar o menu
+  const handleNavigate = (path) => {
+    navigate(path);
+    setMenuAberto(false);
   };
+  // --- FIM MUDANÇA ---
+
 
   // Aplicar correção de caminho para todos os filmes e séries
   const filmes = FilmesData.map(filme => ({
@@ -38,6 +53,27 @@ const TelaInicial = () => {
     ...serie,
     Banner: corrigirCaminhoBanner(serie.Banner)
   }));
+
+  // --- MUDANÇAS AQUI ---
+  // Destaque dinâmico
+  const filmeJack = FilmesData.find(filme => filme.Title === "O Estranho Mundo de Jack");
+  const serieDestaqueDefault = series[0]; // Pega a primeira série da lista
+
+  // Define o item de destaque com base no 'modo'
+  const destaque = modo === 'series' ? {
+    titulo: serieDestaqueDefault.Title,
+    banner: corrigirCaminhoBanner(serieDestaqueDefault.Banner),
+    sinopse: serieDestaqueDefault.Sinopse,
+    Ano: serieDestaqueDefault.Ano,
+    Genero: serieDestaqueDefault.Genero
+  } : {
+    titulo: filmeJack.Title,
+    banner: corrigirCaminhoBanner(filmeJack.Banner),
+    sinopse: filmeJack.Sinopse,
+    Ano: filmeJack.Ano,
+    Genero: filmeJack.Genero
+  };
+  // --- FIM MUDANÇAS ---
   
   /*const recomendados = filmes.slice(0, 5).map(filme => ({
     ...filme,
@@ -64,8 +100,11 @@ const TelaInicial = () => {
   
   // ADICIONE a nova definição de 'recomendados'
   const recomendados = criarRecomendados(filmes, series);
-  // Componente Carousel reutilizável com loop infinito
+  
+  // Componente Carousel reutilizável (código do carrossel permanece o mesmo)
   const Carousel = ({ items }) => {
+    // ... (toda a lógica do Carousel que você já tem) ...
+    // ... (não vou colar tudo aqui para economizar espaço) ...
     const trackRef = React.useRef(null);
     const [index, setIndex] = React.useState(1); // começamos no primeiro item real (depois do clone)
     const cardWidthRef = React.useRef(0);
@@ -206,10 +245,10 @@ const TelaInicial = () => {
       </div>
     );
   };
+  // ... (fim da lógica do carrossel) ...
 
   if (filmes.length === 0 || series.length === 0) {
     return <div>Carregando...</div>; 
-    // Você pode substituir isso por um componente de "spinner" se preferir
   }
 
   return (
@@ -228,14 +267,18 @@ const TelaInicial = () => {
             <FaTimes />
           </button>
         </div>
+        
+        {/* --- MUDANÇA AQUI --- */}
+        {/* Adicionados OnClicks para navegação */}
         <ul className="sidebar-menu">
-          <li>Início</li>
-          <li>Filmes</li>
-          <li>Séries</li>
+          <li onClick={() => handleNavigate('/home')}>Início</li>
+          <li onClick={() => handleNavigate('/filmes')}>Filmes</li>
+          <li onClick={() => handleNavigate('/series')}>Séries</li>
           <li>Minha Lista</li>
           <li>Configurações</li>
           <li onClick={handleLogout}>Sair</li>
         </ul>
+        {/* --- FIM MUDANÇA --- */}
       </aside>
 
       {/* Header */}
@@ -259,37 +302,51 @@ const TelaInicial = () => {
       {/* Conteúdo Principal */}
       <main className="content">
         {/* Seção de Destaque */}
+        {/* --- MUDANÇA AQUI --- */}
+        {/* Atualizado para usar o objeto 'destaque' dinâmico */}
         <section className="destaque-section">
           <div className="poster-principal">
-            <img src={filmeDestaque.banner} alt={filmeDestaque.titulo} />
+            <img src={destaque.banner} alt={destaque.titulo} />
           </div>
           <div className="info-filme">
-            <h1>{filmeDestaque.titulo}</h1>
+            <h1>{destaque.titulo}</h1>
             <div className="filme-info-details">
-              <span>{filmeJack.Ano}</span>
-              <span>{filmeJack.Genero}</span>
+              <span>{destaque.Ano}</span>
+              <span>{destaque.Genero}</span>
             </div>
-            <p>{filmeDestaque.sinopse}</p>
+            <p>{destaque.sinopse}</p>
           </div>
         </section>
+        {/* --- FIM MUDANÇA --- */}
 
-        {/* Recomendados */}
-        <section className="secao">
-          <h2>Recomendados</h2>
-          <Carousel items={recomendados} />
-        </section>
 
-        {/* Filmes */}
-        <section className="secao">
-          <h2>Filmes</h2>
-          <Carousel items={filmes} />
-        </section>
+        {/* --- MUDANÇAS AQUI --- */}
+        {/* Renderização condicional dos carrosséis */}
 
-        {/* Séries */}
-        <section className="secao">
-          <h2>Séries</h2>
-          <Carousel items={series} />
-        </section>
+        {/* Recomendados (Só na home) */}
+        {modo === 'home' && (
+          <section className="secao">
+            <h2>Recomendados</h2>
+            <Carousel items={recomendados} />
+          </section>
+        )}
+
+        {/* Filmes (Na home OU na página de filmes) */}
+        {(modo === 'home' || modo === 'filmes') && (
+          <section className="secao">
+            <h2>Filmes</h2>
+            <Carousel items={filmes} />
+          </section>
+        )}
+
+        {/* Séries (Na home OU na página de séries) */}
+        {(modo === 'home' || modo === 'series') && (
+          <section className="secao">
+            <h2>Séries</h2>
+            <Carousel items={series} />
+          </section>
+        )}
+        {/* --- FIM MUDANÇAS --- */}
       </main>
     </div>
   );

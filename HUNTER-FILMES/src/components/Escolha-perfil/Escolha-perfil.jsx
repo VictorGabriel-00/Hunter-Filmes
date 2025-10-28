@@ -38,6 +38,7 @@ const EscolhaPerfil = () => {
             }}
           >
             <img 
+              id='Perfil'
               src={perfil.imagem} 
               alt={perfil.nome}
               onError={(e) => {

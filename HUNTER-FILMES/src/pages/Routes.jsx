@@ -21,6 +21,8 @@ const AppRoutes = () => {
           <Route path="criar-perfil" element={<CriarPerfil />} />
           <Route path="primeiro-perfil" element={<PrimeiroPerfil/>} />
           <Route path="home" element={<TelaInicial />} />
+          <Route path="filmes" element={<TelaInicial />} />
+          <Route path="series" element={<TelaInicial />} />
           <Route path="cadastro" element={<LoginScreen />} />
         </Route>
 
