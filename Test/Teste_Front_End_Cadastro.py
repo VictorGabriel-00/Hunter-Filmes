@@ -30,7 +30,7 @@ try:
     # Encontrar e clicar no botão de cadastro
     botaoCadastro = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cadastro')))
     botaoCadastro.click()
-
+    time.sleep(2)
     # Preencher o formulário de cadastro
     usuario = wait.until(EC.presence_of_element_located((By.ID, 'usuario')))
     usuario.send_keys('teste')

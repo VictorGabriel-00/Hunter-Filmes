@@ -1,49 +1,166 @@
-import React, { useState } from 'react';
-// Importar useLocation e useNavigate
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { useOutletContext, useLocation, useNavigate } from 'react-router-dom';
 import { FaStar, FaBars, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Tela-inicial.css';
 import FilmesData from './Filmes.json';
 import seriesData from './Series.json';
 
-// Função para corrigir o caminho das imagens
 const corrigirCaminhoBanner = (caminho) => {
-  const nomeBanner = caminho.split('/').pop(); // Pega apenas o nome do arquivo
+  const nomeBanner = caminho.split('/').pop();
   return `/src/components/TelaInicial/Filmes_Series/Banner_Filmes/${nomeBanner}`;
 };
 
+// ✅ Componente Carousel melhorado
+const Carousel = ({ items, onItemClick }) => {
+  const trackRef = useRef(null);
+  const [index, setIndex] = useState(1);
+  const cardWidthRef = useRef(0);
+  const transitioningRef = useRef(false);
+  const GAP = 16;
+
+  if (!items || items.length === 0) return null;
+
+  const extended = [items[items.length - 1], ...items, items[0]];
+
+  const updatePosition = (idx, withTransition = true) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const step = cardWidthRef.current + GAP;
+    if (!withTransition) track.style.transition = 'none';
+    else track.style.transition = '';
+    track.style.transform = `translateX(-${idx * step}px)`;
+  };
+
+  const measure = () => {
+    const track = trackRef.current;
+    if (!track || !track.children || track.children.length < 2) return;
+    const firstReal = track.children[1];
+    const rect = firstReal.getBoundingClientRect();
+    cardWidthRef.current = Math.round(rect.width);
+  };
+
+  useLayoutEffect(() => {
+    measure();
+    updatePosition(index, true);
+  }, [items]);
+
+  useEffect(() => {
+    if (!trackRef.current) return;
+    
+    updatePosition(index, true);
+
+    const handleTransitionEnd = () => {
+      const maxIndex = extended.length - 1;
+      const minIndex = 0;
+
+      if (index === maxIndex) {
+        const track = trackRef.current;
+        if (!track) return;
+        track.style.transition = 'none';
+        const step = cardWidthRef.current + GAP;
+        track.style.transform = `translateX(-${1 * step}px)`;
+        track.offsetHeight;
+        track.style.transition = '';
+        setIndex(1);
+        setTimeout(() => {
+          transitioningRef.current = false;
+        }, 0);
+      } else if (index === minIndex) {
+        const track = trackRef.current;
+        if (!track) return;
+        track.style.transition = 'none';
+        const step = cardWidthRef.current + GAP;
+        const targetIndex = extended.length - 2;
+        track.style.transform = `translateX(-${targetIndex * step}px)`;
+        track.offsetHeight;
+        track.style.transition = '';
+        setIndex(targetIndex);
+        setTimeout(() => {
+          transitioningRef.current = false;
+        }, 0);
+      } else {
+        transitioningRef.current = false;
+      }
+    };
+
+    const track = trackRef.current;
+    track.addEventListener('transitionend', handleTransitionEnd);
+    return () => track.removeEventListener('transitionend', handleTransitionEnd);
+  }, [index, extended.length]);
+
+  useEffect(() => {
+    const onResize = () => {
+      measure();
+      updatePosition(index, false);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [index]);
+
+  const next = () => {
+    if (transitioningRef.current) return;
+    transitioningRef.current = true;
+    setIndex(i => i + 1);
+  };
+
+  const prev = () => {
+    if (transitioningRef.current) return;
+    transitioningRef.current = true;
+    setIndex(i => i - 1);
+  };
+
+  // ✅ Função para lidar com cliques nos cards
+  const handleCardClick = (idx) => {
+    let realIndex = idx - 1;
+    if (realIndex < 0) realIndex = items.length - 1;
+    if (realIndex >= items.length) realIndex = 0;
+    
+    if (onItemClick) {
+      onItemClick(items[realIndex]);
+    }
+  };
+
+  return (
+    <div className="carousel-wrapper">
+      <button className="carousel-btn left" onClick={prev} aria-label="Anterior">
+        <FaChevronLeft />
+      </button>
+      <div className="cards-container carousel-view">
+        <div className="carousel-track" ref={trackRef}>
+          {extended.map((item, idx) => (
+            <div 
+              key={idx} 
+              className="card"
+              onClick={() => handleCardClick(idx)}  
+            >
+              <img src={item.Banner} alt={item.Title} />
+              <div className="card-info">
+                <h3>{item.Title}</h3>
+                <span>{item.Ano}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <button className="carousel-btn right" onClick={next} aria-label="Próximo">
+        <FaChevronRight />
+      </button>
+    </div>
+  );
+};
 
 const TelaInicial = () => {
   const { perfilSelecionado, handleLogout } = useOutletContext();
   const [menuAberto, setMenuAberto] = useState(false);
-
-  // --- MUDANÇAS AQUI ---
-  // Hooks de Roteamento
+  
   const location = useLocation();
   const navigate = useNavigate();
   const pathname = location.pathname;
 
-  // Determina o modo de exibição com base na rota
   const modo = pathname.endsWith('/filmes') ? 'filmes' :
                pathname.endsWith('/series') ? 'series' :
                'home';
-  // --- FIM MUDANÇAS ---
 
-
-  const toggleMenu = () => {
-    setMenuAberto(!menuAberto);
-  };
-
-  // --- MUDANÇA AQUI ---
-  // Função para navegar e fechar o menu
-  const handleNavigate = (path) => {
-    navigate(path);
-    setMenuAberto(false);
-  };
-  // --- FIM MUDANÇA ---
-
-
-  // Aplicar correção de caminho para todos os filmes e séries
   const filmes = FilmesData.map(filme => ({
     ...filme,
     Banner: corrigirCaminhoBanner(filme.Banner)
@@ -54,198 +171,60 @@ const TelaInicial = () => {
     Banner: corrigirCaminhoBanner(serie.Banner)
   }));
 
-  // --- MUDANÇAS AQUI ---
-  // Destaque dinâmico
   const filmeJack = FilmesData.find(filme => filme.Title === "O Estranho Mundo de Jack");
-  const serieDestaqueDefault = series[0]; // Pega a primeira série da lista
+  const serieDestaqueDefault = series[0];
 
-  // Define o item de destaque com base no 'modo'
-  const destaque = modo === 'series' ? {
-    titulo: serieDestaqueDefault.Title,
-    banner: corrigirCaminhoBanner(serieDestaqueDefault.Banner),
-    sinopse: serieDestaqueDefault.Sinopse,
-    Ano: serieDestaqueDefault.Ano,
-    Genero: serieDestaqueDefault.Genero
-  } : {
-    titulo: filmeJack.Title,
-    banner: corrigirCaminhoBanner(filmeJack.Banner),
-    sinopse: filmeJack.Sinopse,
-    Ano: filmeJack.Ano,
-    Genero: filmeJack.Genero
+  // ✅ Estado para o filme em destaque
+  const [destaque, setDestaque] = useState(
+    modo === 'series' ? {
+      titulo: serieDestaqueDefault.Title,
+      banner: corrigirCaminhoBanner(serieDestaqueDefault.Banner),
+      sinopse: serieDestaqueDefault.Sinopse,
+      Ano: serieDestaqueDefault.Ano,
+      Genero: serieDestaqueDefault.Genero
+    } : {
+      titulo: filmeJack.Title,
+      banner: corrigirCaminhoBanner(filmeJack.Banner),
+      sinopse: filmeJack.Sinopse,
+      Ano: filmeJack.Ano,
+      Genero: filmeJack.Genero
+    }
+  );
+
+  const toggleMenu = () => {
+    setMenuAberto(!menuAberto);
   };
-  // --- FIM MUDANÇAS ---
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    setMenuAberto(false);
+  };
+
+  // ✅ Função para atualizar o filme em destaque
+  const handleItemClick = (item) => {
+    setDestaque({
+      titulo: item.Title,
+      banner: corrigirCaminhoBanner(item.Banner),
+      sinopse: item.Sinopse,
+      Ano: item.Ano,
+      Genero: item.Genero
+    });
+    
   
-  /*const recomendados = filmes.slice(0, 5).map(filme => ({
-    ...filme,
-    Banner: corrigirCaminhoBanner(filme.Banner)
-  }));*/
+  };
 
   const criarRecomendados = (filmesArr, seriesArr) => {
     const recomendadosList = [];
-    // Encontra o comprimento da maior lista
     const maxLength = Math.max(filmesArr.length, seriesArr.length);
 
     for (let i = 0; i < maxLength; i++) {
-      // Adiciona um filme se ele existir nesse índice
-      if (filmesArr[i]) {
-        recomendadosList.push(filmesArr[i]);
-      }
-      // Adiciona uma série se ela existir nesse índice
-      if (seriesArr[i]) {
-        recomendadosList.push(seriesArr[i]);
-      }
+      if (filmesArr[i]) recomendadosList.push(filmesArr[i]);
+      if (seriesArr[i]) recomendadosList.push(seriesArr[i]);
     }
     return recomendadosList;
   };
   
-  // ADICIONE a nova definição de 'recomendados'
   const recomendados = criarRecomendados(filmes, series);
-  
-  // Componente Carousel reutilizável (código do carrossel permanece o mesmo)
-  const Carousel = ({ items }) => {
-    // ... (toda a lógica do Carousel que você já tem) ...
-    // ... (não vou colar tudo aqui para economizar espaço) ...
-    const trackRef = React.useRef(null);
-    const [index, setIndex] = React.useState(1); // começamos no primeiro item real (depois do clone)
-    const cardWidthRef = React.useRef(0);
-    const transitioningRef = React.useRef(false);
-
-    const GAP = 16; // gap em px (coincide com 1rem no CSS)
-
-    // Se não houver items, não renderiza
-    if (!items || items.length === 0) return null;
-
-    // Monta array com clones nas extremidades: [last, ...items, first]
-    const extended = [items[items.length - 1], ...items, items[0]];
-
-    // Atualiza posição do track com base no index
-    const updatePosition = (idx, withTransition = true) => {
-      const track = trackRef.current;
-      if (!track) return;
-      const step = cardWidthRef.current + GAP;
-      if (!withTransition) track.style.transition = 'none';
-      else track.style.transition = '';
-      track.style.transform = `translateX(-${idx * step}px)`;
-    };
-
-    // Medir largura do card (usamos o primeiro card real, que está em children[1])
-    const measure = () => {
-      const track = trackRef.current;
-      if (!track || !track.children || track.children.length < 2) return;
-      const firstReal = track.children[1];
-      const rect = firstReal.getBoundingClientRect();
-      cardWidthRef.current = Math.round(rect.width);
-    };
-
-    // Ajusta posição quando index ou tamanho dos items mudam
-    React.useLayoutEffect(() => {
-      measure();
-      // set position for current index without removing transition on initial mount
-      updatePosition(index, true);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items]);
-
-    // Reposiciona sempre que o index mudar
-    React.useEffect(() => {
-      if (!trackRef.current) return;
-      
-      // Aplica a nova posição com animação
-      updatePosition(index, true);
-
-      const handleTransitionEnd = () => {
-        const maxIndex = extended.length - 1; // último índice (clone do primeiro)
-        const minIndex = 0; // clone do último
-
-        // Se estivermos no clone do primeiro (final), saltar para o primeiro real
-        if (index === maxIndex) {
-          updatingToInner(1);
-        } 
-        // Se estivermos no clone do último (início), saltar para o último real
-        else if (index === minIndex) {
-          updatingToInner(extended.length - 2);
-        }
-        // Se não estivermos em um clone, a transição terminou. Libere a trava.
-        else {
-          transitioningRef.current = false;
-        }
-      };
-
-      const updatingToInner = (targetIndex) => {
-        const track = trackRef.current;
-        if (!track) return;
-        track.style.transition = 'none';
-        const step = cardWidthRef.current + GAP;
-        track.style.transform = `translateX(-${targetIndex * step}px)`;
-        // forçar reflow
-        // eslint-disable-next-line no-unused-expressions
-        track.offsetHeight;
-        // reativa transição
-        track.style.transition = '';
-        setIndex(targetIndex);
-
-        setTimeout(() => {
-          transitioningRef.current = false;
-        }, 0);
-      };
-
-      const track = trackRef.current;
-      track.addEventListener('transitionend', handleTransitionEnd);
-      return () => track.removeEventListener('transitionend', handleTransitionEnd);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index, extended.length]);
-
-    React.useEffect(() => {
-      const onResize = () => {
-        measure();
-        updatePosition(index, false);
-      };
-      window.addEventListener('resize', onResize);
-      return () => window.removeEventListener('resize', onResize);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index]);
-
-    const goTo = (nextIndex) => {
-      if (!trackRef.current) return;
-      setIndex(nextIndex);
-    };
-
-    const next = () => {
-      if (transitioningRef.current) return;
-      transitioningRef.current = true;
-      setIndex(i => i + 1);
-    };
-
-    const prev = () => {
-      if (transitioningRef.current) return;
-      transitioningRef.current = true;
-      setIndex(i => i - 1);
-    };
-
-    return (
-      <div className="carousel-wrapper">
-        <button className="carousel-btn left" onClick={prev} aria-label="Anterior">
-          <FaChevronLeft />
-        </button>
-        <div className="cards-container carousel-view">
-          <div className="carousel-track" ref={trackRef}>
-            {extended.map((item, idx) => (
-              <div key={idx} className="card">
-                <img src={item.Banner} alt={item.Title} />
-                <div className="card-info">
-                  <h3>{item.Title}</h3>
-                  <span>{item.Ano}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <button className="carousel-btn right" onClick={next} aria-label="Próximo">
-          <FaChevronRight />
-        </button>
-      </div>
-    );
-  };
-  // ... (fim da lógica do carrossel) ...
 
   if (filmes.length === 0 || series.length === 0) {
     return <div>Carregando...</div>; 
@@ -253,13 +232,11 @@ const TelaInicial = () => {
 
   return (
     <div className="tela-inicial-container">
-      {/* Overlay para fechar o menu ao clicar fora */}
       <div 
         className={`overlay ${menuAberto ? 'show' : ''}`}
         onClick={toggleMenu}
       ></div>
 
-      {/* Sidebar */}
       <aside className={`sidebar ${menuAberto ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h3>Menu</h3>
@@ -268,8 +245,6 @@ const TelaInicial = () => {
           </button>
         </div>
         
-        {/* --- MUDANÇA AQUI --- */}
-        {/* Adicionados OnClicks para navegação */}
         <ul className="sidebar-menu">
           <li onClick={() => handleNavigate('/home')}>Início</li>
           <li onClick={() => handleNavigate('/filmes')}>Filmes</li>
@@ -278,10 +253,8 @@ const TelaInicial = () => {
           <li>Configurações</li>
           <li onClick={handleLogout}>Sair</li>
         </ul>
-        {/* --- FIM MUDANÇA --- */}
       </aside>
 
-      {/* Header */}
       <header className="header">
         <button className="menu-hamburger" onClick={toggleMenu}>
           <FaBars />
@@ -299,11 +272,7 @@ const TelaInicial = () => {
         </div>
       </header>
 
-      {/* Conteúdo Principal */}
       <main className="content">
-        {/* Seção de Destaque */}
-        {/* --- MUDANÇA AQUI --- */}
-        {/* Atualizado para usar o objeto 'destaque' dinâmico */}
         <section className="destaque-section">
           <div className="poster-principal">
             <img src={destaque.banner} alt={destaque.titulo} />
@@ -317,36 +286,27 @@ const TelaInicial = () => {
             <p>{destaque.sinopse}</p>
           </div>
         </section>
-        {/* --- FIM MUDANÇA --- */}
 
-
-        {/* --- MUDANÇAS AQUI --- */}
-        {/* Renderização condicional dos carrosséis */}
-
-        {/* Recomendados (Só na home) */}
         {modo === 'home' && (
           <section className="secao">
             <h2>Recomendados</h2>
-            <Carousel items={recomendados} />
+            <Carousel items={recomendados} onItemClick={handleItemClick} />
           </section>
         )}
 
-        {/* Filmes (Na home OU na página de filmes) */}
         {(modo === 'home' || modo === 'filmes') && (
           <section className="secao">
             <h2>Filmes</h2>
-            <Carousel items={filmes} />
+            <Carousel items={filmes} onItemClick={handleItemClick} />
           </section>
         )}
 
-        {/* Séries (Na home OU na página de séries) */}
         {(modo === 'home' || modo === 'series') && (
           <section className="secao">
             <h2>Séries</h2>
-            <Carousel items={series} />
+            <Carousel items={series} onItemClick={handleItemClick} />
           </section>
         )}
-        {/* --- FIM MUDANÇAS --- */}
       </main>
     </div>
   );

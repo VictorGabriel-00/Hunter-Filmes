@@ -85,15 +85,15 @@
 
 .destaque-section {
   display: flex;
-  gap: 2rem;
+  gap: 1.6rem;
   margin-bottom: 2rem;
-  margin-top: 4rem;
-  padding: 2rem;
+  margin-top: 1.6rem;
+  padding: 1.6rem;
   background: linear-gradient(to right, #070936, #000033);
 }
 
 .poster-principal {
-  flex: 0 0 250px;
+  flex: 0 0 200px;
 }
 
 .poster-principal img {
@@ -102,7 +102,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s;
   cursor: pointer;
-  height: 375px;
+  height: 300px;
   object-fit: cover;
 }
 
@@ -126,23 +126,23 @@
 }
 
 .filme-info-details {
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   display: flex;
-  gap: 1rem;
+  gap:0.81rem;
 }
 
 .filme-info-details span {
   color: #e0e0e0;
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   opacity: 0.8;
 }
 
 .info-filme p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 1.6;
   color: #e0e0e0;
   text-align: justify;
-  max-width: 800px;
+  max-width: 640px;
   opacity: 0.9;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .card {
-  flex: 0 0 200px;
+  flex: 0 0 150px;
   position: relative;
   cursor: pointer;
   transition: transform 0.3s;
@@ -233,9 +233,17 @@
   z-index: 10;
 }
 
+.card.selecionado {
+  border: 4px solid #ffffff; /* Borda branca, como solicitado */
+  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7); /* Adiciona um "brilho" para destacar */
+  transform: scale(1.08); /* Mantém o tamanho do hover para consistência */
+}
+
+
+
 .card img {
   width: 100%;
-  height: 300px;
+  height: 225px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -368,4 +376,46 @@
   .card img {
     height: 180px;
   }
+}
+
+/* Adicione estes estilos ao final do arquivo Tela-inicial.css */
+
+/* Card ativo/selecionado no carrossel */
+.card-active {
+  transform: scale(1.15);
+  z-index: 15;
+  box-shadow: 0 0 25px rgba(49, 87, 196, 0.8);
+}
+
+.card-active img {
+  box-shadow: 0 8px 30px rgba(49, 87, 196, 0.6);
+  border: 2px solid #3157C4;
+}
+
+.card-active .card-info {
+  background: linear-gradient(to top, rgba(49, 87, 196, 0.9), transparent);
+}
+
+.card-active .card-info h3 {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Transição suave para o estado ativo */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+  transition: box-shadow 0.3s ease, border 0.3s ease;
+}
+
+/* Ajuste no hover para não conflitar com o estado ativo */
+.card:hover:not(.card-active) {
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+.card-active:hover {
+  transform: scale(1.18);
 }
