@@ -26,5 +26,26 @@
         "Ano": "2014",
         "Genero": "Drama, Ficção científica",
         "Sinopse": "Um grupo de exploradores viaja através de um buraco de minhoca em busca de um novo lar para a humanidade."
+    },
+    {
+        "Banner": "/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/O_Estranho_Mundo_de_Jack_Banner.png",
+        "Title": "O Estranho Mundo de Jack",
+        "Ano": "1993",
+        "Genero": "Animação, Fantasia",
+        "Sinopse": "Jack Skellington, o Rei das Abóboras de Halloween Town, descobre Christmas Town e decide trazer o Natal para sua cidade."
+    },
+    {
+        "Banner": "/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Deu_a_Louca_na_Chapeuzinho_Banner.jpg",
+        "Title": "Deu a Louca na Chapeuzinho",
+        "Ano": "2005",
+        "Genero": "Infantil/Comédia ",
+        "Sinopse": "A paz da floresta é abalada com o roubo de um livro de receitas. Os suspeitos Chapeuzinho Vermelho, Lobo Mau, a Vovó e o Lenhador contam, cada um, uma história diferente, levando o chefe Grizzly e o detetive Bill Stork às investigações."
+    },
+    {
+        "Banner": "/Hunter-Filmes/HUNTER-FILMES/Filmes_Series/Banner_Filmes/Como_Treinar_o_Seu_Dragao_Banner.jpg",
+        "Title": "Como Treinar o Seu Dragão",
+        "Ano": "2010",
+        "Genero": "Animação, Aventura",
+        "Sinopse": "Um jovem viking chamado Soluço se torna amigo de um dragão ferido e, juntos, eles desafiam as normas de sua tribo."
     }
 ]
