@@ -149,7 +149,7 @@
 
 .secao {
   margin-bottom: 2rem;
-  padding: 0 2rem;
+  /*padding: 0 2rem;*/
 }
 
 .secao h2 {
@@ -157,6 +157,7 @@
   margin-bottom: 1rem;
   color: #fff;
   text-transform: uppercase;
+  padding-left: 50px;
   font-weight: 600;
 }
 
@@ -190,7 +191,7 @@
 .carousel-track {
   display: flex;
   gap: 1rem;
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease-in-out;
 }
 
 .carousel-btn {

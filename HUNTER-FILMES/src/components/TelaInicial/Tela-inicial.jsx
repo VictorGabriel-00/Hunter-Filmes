@@ -39,11 +39,31 @@ const TelaInicial = () => {
     Banner: corrigirCaminhoBanner(serie.Banner)
   }));
   
-  const recomendados = filmes.slice(0, 5).map(filme => ({
+  /*const recomendados = filmes.slice(0, 5).map(filme => ({
     ...filme,
     Banner: corrigirCaminhoBanner(filme.Banner)
-  }));
+  }));*/
 
+  const criarRecomendados = (filmesArr, seriesArr) => {
+    const recomendadosList = [];
+    // Encontra o comprimento da maior lista
+    const maxLength = Math.max(filmesArr.length, seriesArr.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      // Adiciona um filme se ele existir nesse índice
+      if (filmesArr[i]) {
+        recomendadosList.push(filmesArr[i]);
+      }
+      // Adiciona uma série se ela existir nesse índice
+      if (seriesArr[i]) {
+        recomendadosList.push(seriesArr[i]);
+      }
+    }
+    return recomendadosList;
+  };
+  
+  // ADICIONE a nova definição de 'recomendados'
+  const recomendados = criarRecomendados(filmes, series);
   // Componente Carousel reutilizável com loop infinito
   const Carousel = ({ items }) => {
     const trackRef = React.useRef(null);
@@ -89,22 +109,25 @@ const TelaInicial = () => {
     // Reposiciona sempre que o index mudar
     React.useEffect(() => {
       if (!trackRef.current) return;
-      // aplica transição normalmente
+      
+      // Aplica a nova posição com animação
       updatePosition(index, true);
 
       const handleTransitionEnd = () => {
         const maxIndex = extended.length - 1; // último índice (clone do primeiro)
         const minIndex = 0; // clone do último
 
-        // Se estivermos no clone do primeiro (final), saltar para o primeiro real sem animação
+        // Se estivermos no clone do primeiro (final), saltar para o primeiro real
         if (index === maxIndex) {
-          // desativa transição e ajusta para o índice 1 (primeiro real)
           updatingToInner(1);
-        }
-
+        } 
         // Se estivermos no clone do último (início), saltar para o último real
-        if (index === minIndex) {
+        else if (index === minIndex) {
           updatingToInner(extended.length - 2);
+        }
+        // Se não estivermos em um clone, a transição terminou. Libere a trava.
+        else {
+          transitioningRef.current = false;
         }
       };
 
@@ -120,6 +143,10 @@ const TelaInicial = () => {
         // reativa transição
         track.style.transition = '';
         setIndex(targetIndex);
+
+        setTimeout(() => {
+          transitioningRef.current = false;
+        }, 0);
       };
 
       const track = trackRef.current;
@@ -146,25 +173,13 @@ const TelaInicial = () => {
     const next = () => {
       if (transitioningRef.current) return;
       transitioningRef.current = true;
-      // avançar um
       setIndex(i => i + 1);
-      // liberar flag após próxima transição
-      requestAnimationFrame(() => {
-        const track = trackRef.current;
-        const cleanup = () => { transitioningRef.current = false; track.removeEventListener('transitionend', cleanup); };
-        track.addEventListener('transitionend', cleanup);
-      });
     };
 
     const prev = () => {
       if (transitioningRef.current) return;
       transitioningRef.current = true;
       setIndex(i => i - 1);
-      requestAnimationFrame(() => {
-        const track = trackRef.current;
-        const cleanup = () => { transitioningRef.current = false; track.removeEventListener('transitionend', cleanup); };
-        track.addEventListener('transitionend', cleanup);
-      });
     };
 
     return (
