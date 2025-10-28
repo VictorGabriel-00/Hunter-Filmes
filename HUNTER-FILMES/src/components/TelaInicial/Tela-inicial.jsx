@@ -1,164 +1,27 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useOutletContext, useLocation, useNavigate } from 'react-router-dom';
-import { FaStar, FaBars, FaTimes, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './Tela-inicial.css';
 import FilmesData from './Filmes.json';
 import seriesData from './Series.json';
+import Carousel from '../Carousel/Carousel.jsx';
 
 const corrigirCaminhoBanner = (caminho) => {
   const nomeBanner = caminho.split('/').pop();
   return `/src/components/TelaInicial/Filmes_Series/Banner_Filmes/${nomeBanner}`;
 };
 
-// ✅ Componente Carousel melhorado
-const Carousel = ({ items, onItemClick }) => {
-  const trackRef = useRef(null);
-  const [index, setIndex] = useState(1);
-  const cardWidthRef = useRef(0);
-  const transitioningRef = useRef(false);
-  const GAP = 16;
-
-  if (!items || items.length === 0) return null;
-
-  const extended = [items[items.length - 1], ...items, items[0]];
-
-  const updatePosition = (idx, withTransition = true) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const step = cardWidthRef.current + GAP;
-    if (!withTransition) track.style.transition = 'none';
-    else track.style.transition = '';
-    track.style.transform = `translateX(-${idx * step}px)`;
-  };
-
-  const measure = () => {
-    const track = trackRef.current;
-    if (!track || !track.children || track.children.length < 2) return;
-    const firstReal = track.children[1];
-    const rect = firstReal.getBoundingClientRect();
-    cardWidthRef.current = Math.round(rect.width);
-  };
-
-  useLayoutEffect(() => {
-    measure();
-    updatePosition(index, true);
-  }, [items]);
-
-  useEffect(() => {
-    if (!trackRef.current) return;
-    
-    updatePosition(index, true);
-
-    const handleTransitionEnd = () => {
-      const maxIndex = extended.length - 1;
-      const minIndex = 0;
-
-      if (index === maxIndex) {
-        const track = trackRef.current;
-        if (!track) return;
-        track.style.transition = 'none';
-        const step = cardWidthRef.current + GAP;
-        track.style.transform = `translateX(-${1 * step}px)`;
-        track.offsetHeight;
-        track.style.transition = '';
-        setIndex(1);
-        setTimeout(() => {
-          transitioningRef.current = false;
-        }, 0);
-      } else if (index === minIndex) {
-        const track = trackRef.current;
-        if (!track) return;
-        track.style.transition = 'none';
-        const step = cardWidthRef.current + GAP;
-        const targetIndex = extended.length - 2;
-        track.style.transform = `translateX(-${targetIndex * step}px)`;
-        track.offsetHeight;
-        track.style.transition = '';
-        setIndex(targetIndex);
-        setTimeout(() => {
-          transitioningRef.current = false;
-        }, 0);
-      } else {
-        transitioningRef.current = false;
-      }
-    };
-
-    const track = trackRef.current;
-    track.addEventListener('transitionend', handleTransitionEnd);
-    return () => track.removeEventListener('transitionend', handleTransitionEnd);
-  }, [index, extended.length]);
-
-  useEffect(() => {
-    const onResize = () => {
-      measure();
-      updatePosition(index, false);
-    };
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, [index]);
-
-  const next = () => {
-    if (transitioningRef.current) return;
-    transitioningRef.current = true;
-    setIndex(i => i + 1);
-  };
-
-  const prev = () => {
-    if (transitioningRef.current) return;
-    transitioningRef.current = true;
-    setIndex(i => i - 1);
-  };
-
-  // ✅ Função para lidar com cliques nos cards
-  const handleCardClick = (idx) => {
-    let realIndex = idx - 1;
-    if (realIndex < 0) realIndex = items.length - 1;
-    if (realIndex >= items.length) realIndex = 0;
-    
-    if (onItemClick) {
-      onItemClick(items[realIndex]);
-    }
-  };
-
-  return (
-    <div className="carousel-wrapper">
-      <button className="carousel-btn left" onClick={prev} aria-label="Anterior">
-        <FaChevronLeft />
-      </button>
-      <div className="cards-container carousel-view">
-        <div className="carousel-track" ref={trackRef}>
-          {extended.map((item, idx) => (
-            <div 
-              key={idx} 
-              className="card"
-              onClick={() => handleCardClick(idx)}  
-            >
-              <img src={item.Banner} alt={item.Title} />
-              <div className="card-info">
-                <h3>{item.Title}</h3>
-                <span>{item.Ano}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <button className="carousel-btn right" onClick={next} aria-label="Próximo">
-        <FaChevronRight />
-      </button>
-    </div>
-  );
-};
-
 const TelaInicial = () => {
-  const { perfilSelecionado, handleLogout } = useOutletContext();
-  const [menuAberto, setMenuAberto] = useState(false);
+  // --- ADICIONE 'minhaLista' AO CONTEXTO ---
+  const { minhaLista } = useOutletContext(); 
   
   const location = useLocation();
   const navigate = useNavigate();
   const pathname = location.pathname;
 
+  // --- ADICIONE O 'modo' LISTA ---
   const modo = pathname.endsWith('/filmes') ? 'filmes' :
                pathname.endsWith('/series') ? 'series' :
+               pathname.endsWith('/minha-lista') ? 'lista' : // <-- ADICIONE ISTO
                'home';
 
   const filmes = FilmesData.map(filme => ({
@@ -171,52 +34,45 @@ const TelaInicial = () => {
     Banner: corrigirCaminhoBanner(serie.Banner)
   }));
 
-  const filmeJack = FilmesData.find(filme => filme.Title === "O Estranho Mundo de Jack");
+  const filmeJack = filmes.find(filme => filme.Title === "O Estranho Mundo de Jack");
   const serieDestaqueDefault = series[0];
+  
+  // --- ADICIONE LÓGICA PARA DESTAQUE DA LISTA ---
+  // Se a lista não estiver vazia, usa o primeiro item, senão, volta para o Jack
+  const itemDestaqueLista = (minhaLista && minhaLista.length > 0) ? minhaLista[0] : filmeJack;
 
-  // ✅ Estado para o filme em destaque
+  // --- ATUALIZE O ESTADO INICIAL DO DESTAQUE ---
   const [destaque, setDestaque] = useState(
-    modo === 'series' ? {
-      titulo: serieDestaqueDefault.Title,
-      banner: corrigirCaminhoBanner(serieDestaqueDefault.Banner),
-      sinopse: serieDestaqueDefault.Sinopse,
-      Ano: serieDestaqueDefault.Ano,
-      Genero: serieDestaqueDefault.Genero
-    } : {
-      titulo: filmeJack.Title,
-      banner: corrigirCaminhoBanner(filmeJack.Banner),
-      sinopse: filmeJack.Sinopse,
-      Ano: filmeJack.Ano,
-      Genero: filmeJack.Genero
-    }
+    modo === 'series' ? serieDestaqueDefault :
+    modo === 'lista' ? itemDestaqueLista : // <-- ADICIONE ISTO
+    filmeJack // 'home' e 'filmes' usam o Jack
   );
 
-  const toggleMenu = () => {
-    setMenuAberto(!menuAberto);
-  };
-
-  const handleNavigate = (path) => {
-    navigate(path);
-    setMenuAberto(false);
-  };
-
-  // ✅ Função para atualizar o filme em destaque
-  const handleItemClick = (item) => {
-    setDestaque({
-      titulo: item.Title,
-      banner: corrigirCaminhoBanner(item.Banner),
-      sinopse: item.Sinopse,
-      Ano: item.Ano,
-      Genero: item.Genero
-    });
-    
+  // --- ADICIONE UM useEffect PARA ATUALIZAR O DESTAQUE QUANDO O MODO OU A LISTA MUDAR ---
+  useEffect(() => {
+    if (modo === 'series') {
+      setDestaque(serieDestaqueDefault);
+    } else if (modo === 'lista') {
+      // Atualiza o destaque se a lista mudar (ex: adicionar o primeiro item)
+      const novoDestaqueLista = (minhaLista && minhaLista.length > 0) ? minhaLista[0] : filmeJack;
+      setDestaque(novoDestaqueLista);
+    } else {
+      setDestaque(filmeJack);
+    }
+    // Adiciona dependências, incluindo minhaLista
+  }, [modo, minhaLista, filmeJack, serieDestaqueDefault]);
   
+  
+  const handleItemClick = (item) => {
+    if (item && item.Title) {
+      navigate(`/media/${item.Title}`);
+    }
   };
 
   const criarRecomendados = (filmesArr, seriesArr) => {
+    // ... (função sem alterações) ...
     const recomendadosList = [];
     const maxLength = Math.max(filmesArr.length, seriesArr.length);
-
     for (let i = 0; i < maxLength; i++) {
       if (filmesArr[i]) recomendadosList.push(filmesArr[i]);
       if (seriesArr[i]) recomendadosList.push(seriesArr[i]);
@@ -232,61 +88,29 @@ const TelaInicial = () => {
 
   return (
     <div className="tela-inicial-container">
-      <div 
-        className={`overlay ${menuAberto ? 'show' : ''}`}
-        onClick={toggleMenu}
-      ></div>
-
-      <aside className={`sidebar ${menuAberto ? 'open' : ''}`}>
-        <div className="sidebar-header">
-          <h3>Menu</h3>
-          <button className="close-button" onClick={toggleMenu}>
-            <FaTimes />
-          </button>
-        </div>
-        
-        <ul className="sidebar-menu">
-          <li onClick={() => handleNavigate('/home')}>Início</li>
-          <li onClick={() => handleNavigate('/filmes')}>Filmes</li>
-          <li onClick={() => handleNavigate('/series')}>Séries</li>
-          <li>Minha Lista</li>
-          <li>Configurações</li>
-          <li onClick={handleLogout}>Sair</li>
-        </ul>
-      </aside>
-
-      <header className="header">
-        <button className="menu-hamburger" onClick={toggleMenu}>
-          <FaBars />
-        </button>
-        
-        <div className="header-icons">
-          <button className="icon-button">
-            <FaStar />
-          </button>
-          <img 
-            src={perfilSelecionado?.imagem || 'https://placehold.co/150x150/0f172a/ffffff?text=User'} 
-            alt="Perfil" 
-            className="perfil-icon"
-          />
-        </div>
-      </header>
+      <div className="header-placeholder"></div>
 
       <main className="content">
-        <section className="destaque-section">
+        <section 
+          className="destaque-section" 
+          onClick={() => handleItemClick(destaque)} 
+          style={{cursor: 'pointer'}}
+        >
           <div className="poster-principal">
-            <img src={destaque.banner} alt={destaque.titulo} />
+            <img src={destaque.Banner} alt={destaque.Title} />
           </div>
           <div className="info-filme">
-            <h1>{destaque.titulo}</h1>
+            <h1>{destaque.Title}</h1>
             <div className="filme-info-details">
               <span>{destaque.Ano}</span>
               <span>{destaque.Genero}</span>
             </div>
-            <p>{destaque.sinopse}</p>
+            <p>{destaque.Sinopse}</p>
           </div>
         </section>
 
+        {/* --- LÓGICA DE RENDERIZAÇÃO ATUALIZADA --- */}
+        {/* Mostra 'Recomendados' APENAS no 'home' */}
         {modo === 'home' && (
           <section className="secao">
             <h2>Recomendados</h2>
@@ -294,6 +118,7 @@ const TelaInicial = () => {
           </section>
         )}
 
+        {/* Mostra 'Filmes' no 'home' OU 'filmes' */}
         {(modo === 'home' || modo === 'filmes') && (
           <section className="secao">
             <h2>Filmes</h2>
@@ -301,12 +126,28 @@ const TelaInicial = () => {
           </section>
         )}
 
+        {/* Mostra 'Séries' no 'home' OU 'series' */}
         {(modo === 'home' || modo === 'series') && (
           <section className="secao">
             <h2>Séries</h2>
             <Carousel items={series} onItemClick={handleItemClick} />
           </section>
         )}
+
+        {/* Mostra 'Minha Lista' APENAS no 'lista' */}
+        {(modo === 'lista') && (
+          <section className="secao">
+            <h2>Minha Lista</h2>
+            {minhaLista.length > 0 ? (
+              <Carousel items={minhaLista} onItemClick={handleItemClick} />
+            ) : (
+              // Adiciona uma mensagem de lista vazia
+              <p className="lista-vazia">Sua lista está vazia. Adicione filmes e séries!</p>
+            )}
+          </section>
+        )}
+        {/* --- FIM DA LÓGICA DE RENDERIZAÇÃO --- */}
+        
       </main>
     </div>
   );

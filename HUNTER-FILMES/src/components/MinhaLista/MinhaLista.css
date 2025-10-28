@@ -1,0 +1,41 @@
+.minha-lista-container {
+  min-height: 100vh;
+  background-color: #070936; /* Fundo igual ao da home */
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Reutiliza a classe 'content' de Tela-inicial.css */
+.minha-lista-container .content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Reutiliza a classe 'secao' de Tela-inicial.css */
+.minha-lista-container .secao {
+  margin-bottom: 2rem;
+  /* Adiciona padding-top caso não venha de .content (garantia) */
+  padding-top: 1.6rem; 
+}
+
+/* Sobrescreve o padding-left de 'secao h2' da home */
+.minha-lista-container .secao h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-left: 0; /* Alinha à esquerda */
+}
+
+.lista-vazia {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-top: 1rem;
+}
+
+/* Estilos de grid removidos */

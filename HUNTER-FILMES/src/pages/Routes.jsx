@@ -6,6 +6,8 @@ import CriarPerfil from '../components/CriarPerfil/Criar-perfil.jsx';
 import App from '../App.jsx'; 
 import PrimeiroPerfil from '../components/Primeiro-perfil/Primeiro-perfil.jsx';
 import TelaInicial from '../components/TelaInicial/Tela-inicial.jsx';
+import DetalheMedia from '../components/DetalheMedia/DetalheMedia.jsx';
+// import MinhaLista from '../components/MinhaLista/MinhaLista.jsx'; // <-- REMOVA ESTA LINHA
 
 const AppRoutes = () => {
   return (
@@ -24,6 +26,13 @@ const AppRoutes = () => {
           <Route path="filmes" element={<TelaInicial />} />
           <Route path="series" element={<TelaInicial />} />
           <Route path="cadastro" element={<LoginScreen />} />
+
+          <Route path="media/:title" element={<DetalheMedia />} />
+          
+          {/* --- ESTA É A LINHA MODIFICADA --- */}
+          <Route path="minha-lista" element={<TelaInicial />} /> 
+          {/* --- FIM DA MODIFICAÇÃO --- */}
+
         </Route>
 
         <Route path="*" element={<h1>404 - Página Não Encontrada</h1>} />

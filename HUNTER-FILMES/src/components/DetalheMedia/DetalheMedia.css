@@ -1,0 +1,175 @@
+.detalhe-media-container {
+  min-height: 100vh;
+  padding-bottom: 3rem;
+  background-color: #070936; 
+  /* Adiciona padding-top para o header fixo global */
+  padding-top: 80px; 
+}
+
+.detalhe-banner-bg {
+  /* Não é mais absoluto, é um bloco */
+  position: relative; 
+  width: 100%;
+  height: 50vh; /* Reduzido para 50vh */
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.detalhe-banner-overlay {
+  width: 100%;
+  height: 100%;
+  /* O gradiente agora vai ATÉ o fundo da página */
+  background: linear-gradient(to top, #070936 10%, rgba(7, 9, 54, 0.5) 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Placeholder REMOVIDO */
+
+.detalhe-conteudo {
+  display: flex;
+  gap: 1.6rem;
+  padding: 1.6rem 2rem;
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  /* Esta é a mágica: Puxa o conteúdo para cima, sobrepondo o banner */
+  margin-top: -100px; 
+}
+
+.detalhe-poster {
+  flex: 0 0 200px;
+  z-index: 2; /* Garante que o poster fique sobre a info */
+}
+
+.detalhe-poster img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  height: 300px;
+  object-fit: cover;
+}
+
+.detalhe-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 2rem;
+  color: #ffffff;
+  /* Adiciona um padding-top para alinhar com o poster que foi puxado para cima */
+  padding-top: 100px; 
+}
+
+.detalhe-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+}
+
+.detalhe-meta {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+  opacity: 0.8;
+}
+
+.detalhe-sinopse {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e0e0e0;
+  text-align: justify;
+  max-width: 640px;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+}
+
+.detalhe-botoes {
+  display: flex;
+  gap: 1rem;
+}
+
+.detalhe-botoes button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.detalhe-botoes button:hover {
+  transform: scale(1.05);
+}
+
+.btn-assistir {
+  background-color: #ffffff;
+  color: #070936;
+}
+
+.btn-minha-lista {
+  background-color: rgba(121, 121, 121, 0.5);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Seção "Semelhantes" */
+.secao-semelhantes {
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  position: relative;
+  z-index: 1;
+}
+
+.secao-semelhantes h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.cards-container-simples {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cards-container-simples::-webkit-scrollbar {
+  display: none;
+}
+
+.card-simples {
+  flex: 0 0 150px; 
+  cursor: pointer;
+  transition: transform 0.3s;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-simples:hover {
+  transform: scale(1.08);
+}
+
+.card-simples img {
+  width: 100%;
+  height: 225px; 
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
