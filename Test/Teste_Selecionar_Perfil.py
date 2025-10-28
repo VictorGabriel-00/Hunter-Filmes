@@ -38,7 +38,11 @@ try:
     # Encontrar e clicar no botão
     botao = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'login')))
     botao.click()
-
+    time.sleep(3)
+    #Selecionar o Perfil do Usuario
+    perfil = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'perfil-opcao')))
+    perfil.click()
+    time.sleep(3)
     
     # Aguardar um pouco para ver o resultado
     time.sleep(3)
