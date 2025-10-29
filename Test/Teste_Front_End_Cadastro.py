@@ -27,6 +27,7 @@ try:
     # Aguardar a página carregar
     wait = WebDriverWait(driver, 10)
     
+    time.sleep(2)
     # Encontrar e clicar no botão de cadastro
     botaoCadastro = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'cadastro')))
     botaoCadastro.click()

@@ -123,7 +123,7 @@ const Carousel = ({ items, onItemClick }) => {
               className="card"
               onClick={() => handleCardClick(idx)} // Clique simplificado
             >
-              <img src={item.Banner} alt={item.Title} />
+              <img id = "Banner"src={item.Banner} alt={item.Title} />
               <div className="card-info">
                 <h3>{item.Title}</h3>
                 <span>{item.Ano}</span>

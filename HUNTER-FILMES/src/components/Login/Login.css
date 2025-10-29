@@ -72,7 +72,7 @@
 
 .login-container button.login {
   margin-left: 38%;
-  margin-top: 2rem;
+  margin-top: 1.5rem; /* Reduzido para dar espaço para a mensagem de erro/sucesso */
   margin-bottom: 1.5rem;
   transition: background-color 0.25s;
 }
@@ -124,3 +124,21 @@
   flex: 1;
   margin: 0 0.5em;
 }
+
+/* --- ESTILOS ADICIONADOS --- */
+.login-mensagem {
+  font-size: 0.9rem; /* Tamanho pequeno */
+  text-align: left;  /* Alinhado à esquerda */
+  padding-left: 0.5rem; /* Alinha com o texto dos inputs */
+  margin-top: 0.5rem; /* Espaço abaixo da senha */
+  font-weight: bold;
+}
+
+.login-mensagem.erro {
+  color: #FF0000; /* Vermelho vivo */
+}
+
+.login-mensagem.sucesso {
+  color: #FF0000; /* Vermelho, conforme solicitado pelo usuário */
+}
+/* --- FIM DOS ESTILOS ADICIONADOS --- */

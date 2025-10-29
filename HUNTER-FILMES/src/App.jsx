@@ -282,12 +282,12 @@ function App() {
             </div>
             
             <ul className="sidebar-menu">
-              <li onClick={() => handleNavigate('/home')}>Início</li>
-              <li onClick={() => handleNavigate('/filmes')}>Filmes</li>
-              <li onClick={() => handleNavigate('/series')}>Séries</li>
-              <li onClick={() => handleNavigate('/minha-lista')}>Minha Lista</li>
-              <li>Configurações</li>
-              <li onClick={handleLogout}>Sair</li>
+              <li id = "1" onClick={() => handleNavigate('/home')}>Início</li>
+              <li id = "2" onClick={() => handleNavigate('/filmes')}>Filmes</li>
+              <li id = "3" onClick={() => handleNavigate('/series')}>Séries</li>
+              <li id = "4" onClick={() => handleNavigate('/minha-lista')}>Minha Lista</li>
+              <li id = "5">Configurações</li>
+              <li id = "6" onClick={handleLogout}>Sair</li>
             </ul>
           </aside>
 

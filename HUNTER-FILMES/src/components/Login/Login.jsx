@@ -88,11 +88,8 @@ const Login = () => {
   
     <>
   
-      {mensagem && (
-        <div className={mensagem.isSuccess ? 'mensagem-sucesso' : 'mensagem-erro'}>
-          {mensagem.text}
-        </div>
-      )}
+      {/* A MENSAGEM FOI REMOVIDA DAQUI 
+      */}
 
       {isCadastro ? (
         <Cadastro onVoltar={handleVoltarParaLogin} />
@@ -112,6 +109,15 @@ const Login = () => {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
           />
+
+          {/* --- MENSAGEM MOVIDA PARA CÁ --- */}
+          {mensagem && (
+            <div className={`login-mensagem ${mensagem.isSuccess ? 'sucesso' : 'erro'}`}>
+              {mensagem.text}
+            </div>
+          )}
+          {/* --- FIM DA MODIFICAÇÃO --- */}
+
           <button id="login" onClick={handleLogin} disabled={loading} className="login">
             {loading ? 'Entrando...' : 'Login'}
           </button>
