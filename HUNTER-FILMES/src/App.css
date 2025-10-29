@@ -12,7 +12,7 @@ body {
 
 /* Placeholder para o header fixo */
 .header-placeholder {
-  height: 80px; /* Ajuste esta altura para corresponder à altura do seu .header */
+  height: 40px; /* Ajuste esta altura para corresponder à altura do seu .header */
 }
 
 .header {
