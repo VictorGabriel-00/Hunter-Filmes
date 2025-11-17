@@ -16,29 +16,21 @@ public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID id_serie;
+    private UUID id;
     private String titulo;
     private String descricao;
     private String anoLancamento;
     private int temporadas;
 
-    public int temporadas() {
-        return temporadas;
+    public UUID getId() {
+        return id;
     }
 
-    public void setTemporadas(int temporadas) {
-        this.temporadas = temporadas;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public UUID id_serie() {
-        return id_serie;
-    }
-
-    public void setIdSerie(UUID id_serie) {
-        id_serie = id_serie;
-    }
-
-    public String titulo() {
+    public String getTitulo() {
         return titulo;
     }
 
@@ -46,7 +38,7 @@ public class Serie {
         this.titulo = titulo;
     }
 
-    public String descricao() {
+    public String getDescricao() {
         return descricao;
     }
 
@@ -54,11 +46,19 @@ public class Serie {
         this.descricao = descricao;
     }
 
-    public String anoLancamento() {
+    public String getAnoLancamento() {
         return anoLancamento;
     }
 
     public void setAnoLancamento(String anoLancamento) {
         this.anoLancamento = anoLancamento;
+    }
+
+    public int getTemporadas() {
+        return temporadas;
+    }
+
+    public void setTemporadas(int temporadas) {
+        this.temporadas = temporadas;
     }
 }
