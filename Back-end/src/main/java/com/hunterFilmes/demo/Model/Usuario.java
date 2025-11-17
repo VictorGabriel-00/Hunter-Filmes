@@ -20,8 +20,8 @@ public class Usuario {
     private String email;
     private String senha;
     private String dataNascimento;
-    @ManyToOne
-    private Pagamento pagamento;
+   /* @ManyToOne
+    private Pagamento pagamento;*/
 
 
     public UUID getId() {

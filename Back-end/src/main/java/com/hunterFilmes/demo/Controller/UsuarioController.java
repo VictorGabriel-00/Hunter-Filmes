@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/usuario")
+@RequestMapping("/usuario")
 @CrossOrigin
 public class UsuarioController {
 

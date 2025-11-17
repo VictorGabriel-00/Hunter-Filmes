@@ -17,8 +17,8 @@ public class Plano {
     private Float preco;
     private String descricao;
 
-    @OneToOne
-    private Pagamento pagamento;
+    /*@OneToOne
+    private Pagamento pagamento;*/
 
     public UUID id_plano() {
         return id_plano;
