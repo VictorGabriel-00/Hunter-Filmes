@@ -16,9 +16,10 @@ public class Filme {
     @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id;
     private String titulo;
-    private String descicao;
+    private String descricao;
     private String anoLancamento;
     private Float duracao;
+
 
     public UUID getId() {
         return id;
@@ -36,12 +37,12 @@ public class Filme {
         this.titulo = titulo;
     }
 
-    public String getDescicao() {
-        return descicao;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescicao(String descicao) {
-        this.descicao = descicao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getAnoLancamento() {
@@ -60,3 +61,4 @@ public class Filme {
         this.duracao = duracao;
     }
 }
+
