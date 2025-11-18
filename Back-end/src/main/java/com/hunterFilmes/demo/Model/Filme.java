@@ -14,21 +14,21 @@ public class Filme {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID id_filme;
+    private UUID id;
     private String titulo;
     private String descicao;
     private String anoLancamento;
     private Float duracao;
 
-    public UUID id_filme() {
-        return id_filme;
+    public UUID getId() {
+        return id;
     }
 
-    public void setIdFilme(UUID id_filme) {
-        this.id_filme = id_filme;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public String titulo() {
+    public String getTitulo() {
         return titulo;
     }
 
@@ -36,7 +36,7 @@ public class Filme {
         this.titulo = titulo;
     }
 
-    public String descicao() {
+    public String getDescicao() {
         return descicao;
     }
 
@@ -44,7 +44,7 @@ public class Filme {
         this.descicao = descicao;
     }
 
-    public String anoLancamento() {
+    public String getAnoLancamento() {
         return anoLancamento;
     }
 
@@ -52,7 +52,7 @@ public class Filme {
         this.anoLancamento = anoLancamento;
     }
 
-    public Float duracao() {
+    public Float getDuracao() {
         return duracao;
     }
 
