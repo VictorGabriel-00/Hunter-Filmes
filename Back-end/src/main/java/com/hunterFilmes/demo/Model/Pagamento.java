@@ -8,7 +8,8 @@ import org.hibernate.type.SqlTypes;
 import java.util.UUID;
 
 @Entity
-public class Pagamento {
+public class
+Pagamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
