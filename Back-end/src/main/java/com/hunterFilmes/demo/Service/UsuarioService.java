@@ -1,55 +1,60 @@
 package com.hunterFilmes.demo.Service;
 
+import com.hunterFilmes.demo.Dto.UsuarioDto;
 import com.hunterFilmes.demo.Model.Usuario;
 import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Service
 public class UsuarioService {
+
     @Autowired
     private UsuarioRepositori usuarioRepositori;
 
-
-    //Criar Usuario
-    public Usuario criarUsuario(Usuario usuario){
+    @Transactional
+    public Usuario criarUsuario(UsuarioDto usuarioDto) {
+        var usuario = new Usuario();
+        BeanUtils.copyProperties(usuarioDto, usuario);
         return usuarioRepositori.save(usuario);
     }
 
-    //Listar todos os usuarios
-    public List<Usuario> listarUsuario(){
+    public List<Usuario> listarTodosUsuarios() {
         return usuarioRepositori.findAll();
     }
 
-    //Listar por Id
-    public Optional<Usuario> buscarUsuarioById(UUID id){
+    public Optional<Usuario> buscarUsuarioPorId(UUID id) {
         return usuarioRepositori.findById(id);
     }
 
-    // atualizar Usuario
-    public Usuario atualizarUsuario(UUID id,  Usuario usuarioAtualizado){
-        Usuario usuario = usuarioRepositori.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario nao encontrato"));
-
-        usuario.setNome(usuarioAtualizado.getNome());
-        usuario.setEmail(usuarioAtualizado.getEmail());
-        usuario.setSenha(usuarioAtualizado.getSenha());
-        usuario.setDataNascimento(usuarioAtualizado.getDataNascimento());
-
-        return usuarioRepositori.save(usuario);
-
+    @Transactional
+    public Optional<Usuario> atualizarUsuario(UUID id, UsuarioDto usuarioDto) {
+        Optional<Usuario> usuarioOp = usuarioRepositori.findById(id);
+        if (usuarioOp.isEmpty()) {
+            return Optional.empty();
+        }
+        var usuario = usuarioOp.get();
+        BeanUtils.copyProperties(usuarioDto, usuario);
+        return Optional.of(usuarioRepositori.save(usuario));
     }
 
-
-    // Deleear usuario
-    public void deletarUsuario(UUID id){
-        usuarioRepositori.deleteById(id);
+    @Transactional
+    public boolean deletarUsuario(UUID id) {
+        Optional<Usuario> usuarioOp = usuarioRepositori.findById(id);
+        if (usuarioOp.isEmpty()) {
+            return false;
+        }
+        usuarioRepositori.delete(usuarioOp.get());
+        return true;
     }
 
-
+    public boolean usuarioExiste(UUID id) {
+        return usuarioRepositori.existsById(id);
+    }
 }
