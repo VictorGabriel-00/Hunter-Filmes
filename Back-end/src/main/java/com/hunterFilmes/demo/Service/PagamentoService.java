@@ -2,7 +2,7 @@ package com.hunterFilmes.demo.Service;
 
 import com.hunterFilmes.demo.Model.Pagamento;
 import com.hunterFilmes.demo.Model.Plano;
-import com.hunterFilmes.demo.Repositori.PagamentoRepositori; // Certifique-se de criar este repositório
+import com.hunterFilmes.demo.Repositori.PagamentoRepositori;
 import com.hunterFilmes.demo.Repositori.PlanoRepositori;
 import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
 import jakarta.transaction.Transactional;

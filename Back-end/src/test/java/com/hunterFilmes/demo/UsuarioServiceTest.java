@@ -6,6 +6,7 @@ import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
 import com.hunterFilmes.demo.Service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -56,6 +57,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve criar um usuário com sucesso")
+    @Order(1)
     void deveCriarUsuarioComSucesso() {
         // faz a preparação do que vai acontecer no teste
         when(usuarioRepositori.save(any(Usuario.class))).thenReturn(usuario);
@@ -81,6 +83,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve listar todos os usuários")
+    @Order(2)
     void deveListarTodosUsuarios() {
         Usuario usuario2 = new Usuario();
         usuario2.setId(UUID.randomUUID());
@@ -106,6 +109,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve buscar usuário por ID com sucesso")
+    @Order(3)
     void deveBuscarUsuarioPorIdComSucesso() {
         when(usuarioRepositori.findById(usuarioId)).thenReturn(Optional.of(usuario));
 
@@ -124,6 +128,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve retornar Optional vazio quando usuário não existir")
+    @Order(4)
     void deveRetornarOptionalVazioQuandoUsuarioNaoExistir() {
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.findById(idInexistente)).thenReturn(Optional.empty());
@@ -137,6 +142,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve atualizar usuário com sucesso")
+    @Order(5)
     void deveAtualizarUsuarioComSucesso() {
 
         System.out.println("Usuario antigo");
@@ -182,6 +188,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Não deve atualizar usuário quando ID não existir")
+    @Order(6)
     void naoDeveAtualizarUsuarioQuandoIdNaoExistir() {
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.findById(idInexistente)).thenReturn(Optional.empty());
@@ -198,6 +205,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve deletar usuário com sucesso")
+    @Order(7)
     void deveDeletarUsuarioComSucesso() {
         when(usuarioRepositori.findById(usuarioId)).thenReturn(Optional.of(usuario));
         doNothing().when(usuarioRepositori).delete(usuario);
@@ -214,6 +222,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Não deve deletar usuário quando ID não existir")
+    @Order(8)
     void naoDeveDeletarUsuarioQuandoIdNaoExistir() {
         // Arrange
         UUID idInexistente = UUID.randomUUID();
@@ -230,6 +239,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve verificar se usuário existe")
+    @Order(9)
     void deveVerificarSeUsuarioExiste() {
         when(usuarioRepositori.existsById(usuarioId)).thenReturn(true);
 
@@ -242,6 +252,7 @@ class UsuarioServiceTest {
 
     @Test
     @DisplayName("Deve retornar false quando usuário não existe")
+    @Order(10)
     void deveRetornarFalseQuandoUsuarioNaoExiste() {
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.existsById(idInexistente)).thenReturn(false);

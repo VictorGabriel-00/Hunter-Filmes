@@ -6,6 +6,7 @@ import com.hunterFilmes.demo.Repositori.SerieRepositori;
 import com.hunterFilmes.demo.Service.SerieService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,6 +56,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve criar uma série com sucesso")
+    @Order(1)
     void deveCriarSerieComSucesso() {
 
         when(serieRepositori.save(any(Serie.class))).thenReturn(serie);
@@ -74,6 +76,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve listar todas as séries")
+    @Order(2)
     void deveListarTodasSeries() {
         Serie serie2 = new Serie();
         serie2.setId(UUID.randomUUID());
@@ -98,6 +101,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve buscar série por ID com sucesso")
+    @Order(3)
     void deveBuscarSeriePorIdComSucesso() {
         when(serieRepositori.findById(serieId)).thenReturn(Optional.of(serie));
 
@@ -112,6 +116,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve retornar Optional vazio quando série não existir")
+    @Order(4)
     void deveRetornarOptionalVazioQuandoSerieNaoExistir() {
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
@@ -125,6 +130,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve atualizar série com sucesso")
+    @Order(5)
     void deveAtualizarSerieComSucesso() {
         SerieDto serieDtoAtualizada = new SerieDto(
                 "Breaking Bad",
@@ -155,6 +161,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Não deve atualizar série quando ID não existir")
+    @Order(6)
     void naoDeveAtualizarSerieQuandoIdNaoExistir() {
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
@@ -168,6 +175,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve deletar série com sucesso")
+    @Order(7)
     void deveDeletarSerieComSucesso() {
         when(serieRepositori.findById(serieId)).thenReturn(Optional.of(serie));
         doNothing().when(serieRepositori).delete(serie);
@@ -181,6 +189,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Não deve deletar série quando ID não existir")
+    @Order(8)
     void naoDeveDeletarSerieQuandoIdNaoExistir() {
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
@@ -194,6 +203,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve verificar se série existe")
+    @Order(9)
     void deveVerificarSeSerieExiste() {
         when(serieRepositori.existsById(serieId)).thenReturn(true);
 
@@ -205,6 +215,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Deve retornar false quando série não existe")
+    @Order(10)
     void deveRetornarFalseQuandoSerieNaoExiste() {
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.existsById(idInexistente)).thenReturn(false);
@@ -217,6 +228,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Nao deve criar serie se a temporada for igual a 0")
+    @Order(11)
     void naoCriarSerieCom0Temporadas() {
 
         SerieDto serieComMuitasTemporadas = new SerieDto(
@@ -245,6 +257,7 @@ class SerieServiceTest {
 
     @Test
     @DisplayName("Nao deve criar serie se a temporada for igual a 0")
+    @Order(12)
     void naoCriarComTemporadaNegativa() {
 
         SerieDto serieComMuitasTemporadas = new SerieDto(

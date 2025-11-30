@@ -1,5 +1,6 @@
 package com.hunterFilmes.demo;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ class TesteConexaoSupabase {
     private DataSource dataSource;
 
     @Test
+    @Order(1)
     void conectarSupabaseTest() throws SQLException {
         System.out.println("Testando conexão com Banco de dados");
 
@@ -43,13 +45,13 @@ class TesteConexaoSupabase {
             System.out.println("   URL: " + url);
             System.out.println("   Driver: " + metaData.getDriverName());
             System.out.println("   Versão: " + metaData.getDriverVersion());
-            System.out.println("   Username: " + metaData.getUserName());
+            System.out.println("   Username: " + metaData.getUserName() );
         }
-
 
     }
 
     @Test
+    @Order(2)
     void deveExecutarQueryNoSupabase() throws SQLException {
         try (Connection connection = dataSource.getConnection();
              var statement = connection.createStatement();
@@ -66,7 +68,7 @@ class TesteConexaoSupabase {
 
             System.out.println("✅ Query executada com sucesso no Supabase!");
             System.out.println("   Database atual: " + database);
-            System.out.println("   Versão PostgreSQL: " + version);
+            System.out.println("   Versão PostgreSQL: " + version + "\n");
         }
     }
 }

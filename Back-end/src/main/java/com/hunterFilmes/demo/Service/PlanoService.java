@@ -29,7 +29,6 @@ public class PlanoService {
 
                 planoRepositori.save(basico);
 
-
                 Plano premium = new Plano();
                 premium.setNome("Plano Premium");
                 premium.setPreco(29.90f);
