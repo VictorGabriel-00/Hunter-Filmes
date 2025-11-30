@@ -21,6 +21,10 @@ public class FilmeService {
 
     @Transactional
     public Filme criarFilme(FilmeDto  filmeDto) {
+        if(filmeDto.duracao() == 0 || filmeDto.duracao() < 0){
+            System.out.println("Duração do filme invalida");
+        }
+
         var filme = new  Filme();
         BeanUtils.copyProperties(filmeDto, filme);
         return filmeRepositori.save(filme);
