@@ -7,5 +7,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record PagamentoDto(@NotNull UUID usuario, @NotNull UUID plano) {
+public record PagamentoDto(@NotNull UUID usuario, @NotNull UUID plano ,@NotNull float valor) {
 }

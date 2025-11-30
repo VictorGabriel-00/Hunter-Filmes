@@ -1,15 +1,24 @@
 package com.hunterFilmes.demo.Service;
 
+import com.hunterFilmes.demo.Dto.PagamentoDto;
 import com.hunterFilmes.demo.Model.Pagamento;
 import com.hunterFilmes.demo.Model.Plano;
 import com.hunterFilmes.demo.Model.Usuario;
 import com.hunterFilmes.demo.Repositori.PagamentoRepositori; // Certifique-se de criar este repositório
 import com.hunterFilmes.demo.Repositori.PlanoRepositori;
 import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,28 +33,6 @@ public class PagamentoService {
 
     @Autowired
     private PlanoRepositori planoRepositori;
-
-//    public Pagamento processarPagamento(Usuario usuario, Plano plano) {
-//        Pagamento novoPagamento = new Pagamento();
-//        novoPagamento.setUsuario(usuario);
-//        novoPagamento.setPlano(plano);
-//        novoPagamento.setDataPagamento(LocalDateTime.now());
-//
-//        novoPagamento.setPagamentoAtivo(true);
-//
-//        return pagamentoRepositori.save(novoPagamento);
-//    }
-
-    public boolean verificarPagamentoAtivo(UUID idPagamento) {
-        Optional<Pagamento> pagamentoOp = pagamentoRepositori.findById(idPagamento);
-
-        if (pagamentoOp.isPresent()) {
-            Pagamento pagamento = pagamentoOp.get();
-            return pagamento.isPagamentoAtivo();
-        }
-
-        return false;
-    }
 
     public Pagamento processarPagamento(UUID idUsuario, UUID idPlano) {
         var usuario = usuarioRepositori.findById(idUsuario)
@@ -62,4 +49,46 @@ public class PagamentoService {
 
         return pagamentoRepositori.save(novoPagamento);
     }
+
+
+    @Scheduled(cron = "0 0 0 * * *", zone = "America/Sao_Paulo")
+    @Transactional
+    public boolean verificacaoAssinatura() {
+        List<Pagamento> assinaturasAtivas = pagamentoRepositori.findBypagamentoAtivo(true);
+
+        LocalDateTime hoje = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
+
+        for (Pagamento assinatura : assinaturasAtivas) {
+
+            LocalDateTime dataInicio = assinatura.getDataPagamento();
+
+            if (dataInicio == null) {
+                continue;
+            }
+
+            long diasPassados = ChronoUnit.DAYS.between(dataInicio, hoje);
+
+            if (diasPassados >= 30) {
+                assinatura.setPagamentoAtivo(false);
+                System.out.println("Assinatura ID " + assinatura.getId() + " expirou.");
+            }
+        }
+
+        pagamentoRepositori.saveAll(assinaturasAtivas);
+        return true;
+    }
+
+
+    public boolean verificarPagamentoAtivo(UUID idPagamento) {
+        Optional<Pagamento> pagamentoOp = pagamentoRepositori.findById(idPagamento);
+
+        if (pagamentoOp.isPresent()) {
+            Pagamento pagamento = pagamentoOp.get();
+            return pagamento.isPagamentoAtivo();
+        }
+
+        return false;
+    }
 }
+
+
