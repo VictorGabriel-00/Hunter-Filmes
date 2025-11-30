@@ -20,9 +20,19 @@ public class Usuario {
     private String email;
     private String senha;
     private String dataNascimento;
-   /* @ManyToOne
-    private Pagamento pagamento;*/
 
+
+
+    public Usuario() {
+
+    }
+
+    public Usuario(String nome, String email, String senha, String dataNascimento) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.dataNascimento = dataNascimento;
+    }
 
     public UUID getId() {
         return id;
