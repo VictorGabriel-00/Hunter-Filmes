@@ -1,20 +1,16 @@
 package com.hunterFilmes.demo.Service;
 
-import com.hunterFilmes.demo.Dto.PagamentoDto;
 import com.hunterFilmes.demo.Model.Pagamento;
 import com.hunterFilmes.demo.Model.Plano;
-import com.hunterFilmes.demo.Model.Usuario;
 import com.hunterFilmes.demo.Repositori.PagamentoRepositori; // Certifique-se de criar este repositório
 import com.hunterFilmes.demo.Repositori.PlanoRepositori;
 import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -34,12 +30,18 @@ public class PagamentoService {
     @Autowired
     private PlanoRepositori planoRepositori;
 
-    public Pagamento processarPagamento(UUID idUsuario, UUID idPlano) {
+    public Pagamento processarPagamento(UUID idUsuario, UUID idPlano,float valor) {
+
         var usuario = usuarioRepositori.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         var plano = planoRepositori.findById(idPlano)
                 .orElseThrow(() -> new RuntimeException("Plano não encontrado"));
+
+        if(valor < plano.getPreco()) {
+            throw new RuntimeException("Valor insuficiente para o plano selecionado");
+        }
+
 
         Pagamento novoPagamento = new Pagamento();
         novoPagamento.setUsuario(usuario);

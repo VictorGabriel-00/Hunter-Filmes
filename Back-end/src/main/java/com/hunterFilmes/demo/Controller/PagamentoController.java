@@ -23,7 +23,8 @@ public class PagamentoController {
         try {
             Pagamento pagamento = pagamentoService.processarPagamento(
                     pagamentoDto.usuario(),
-                    pagamentoDto.plano()
+                    pagamentoDto.plano(),
+                    pagamentoDto.valor()
             );
             return ResponseEntity.status(HttpStatus.CREATED).body(pagamento);
         } catch (RuntimeException e) {
