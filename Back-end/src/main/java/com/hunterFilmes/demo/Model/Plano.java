@@ -16,19 +16,18 @@ public class Plano {
     private String nome;
     private Float preco;
     private String descricao;
+    private boolean removerAnuncio;
+    private boolean permitiBaixar;
 
-    /*@OneToOne
-    private Pagamento pagamento;*/
-
-    public UUID id_plano() {
+    public UUID getId_plano() {
         return id_plano;
     }
 
-    public void setIdPlano(UUID id_plano) {
+    public void setId_plano(UUID id_plano) {
         this.id_plano = id_plano;
     }
 
-    public String nome() {
+    public String getNome() {
         return nome;
     }
 
@@ -36,7 +35,7 @@ public class Plano {
         this.nome = nome;
     }
 
-    public Float preco() {
+    public Float getPreco() {
         return preco;
     }
 
@@ -44,11 +43,27 @@ public class Plano {
         this.preco = preco;
     }
 
-    public String descricao() {
+    public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public boolean isRemoverAnuncio() {
+        return removerAnuncio;
+    }
+
+    public void setRemoverAnuncio(boolean removerAnuncio) {
+        this.removerAnuncio = removerAnuncio;
+    }
+
+    public boolean isPermitiBaixar() {
+        return permitiBaixar;
+    }
+
+    public void setPermitiBaixar(boolean permitiBaixar) {
+        this.permitiBaixar = permitiBaixar;
     }
 }
