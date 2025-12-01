@@ -43,7 +43,7 @@ public class FilmeService {
     @Transactional
     public Optional<Filme> atualizarFilme(UUID id, FilmeDto filmeDto) {
         Optional<Filme> filmeOp = filmeRepositori.findById(id);
-        if(filmeOp.isPresent()){
+        if(filmeOp.isEmpty()){
             return Optional.empty();
         }
 

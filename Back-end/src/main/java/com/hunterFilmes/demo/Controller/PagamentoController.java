@@ -32,7 +32,7 @@ public class PagamentoController {
         }
     }
 
-    @GetMapping("/{id}/status")
+    @GetMapping("/status/{id}")
     public ResponseEntity<Boolean> verificarStatusPagamento(@PathVariable UUID id) {
         boolean ativo = pagamentoService.verificarPagamentoAtivo(id);
         return ResponseEntity.ok(ativo);

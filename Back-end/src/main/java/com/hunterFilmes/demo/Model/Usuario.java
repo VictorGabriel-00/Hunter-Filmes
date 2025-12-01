@@ -7,6 +7,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,6 +21,9 @@ public class Usuario {
     private String email;
     private String senha;
     private String dataNascimento;
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Pagamento> pagamentos;
 
 
 
@@ -62,8 +66,8 @@ public class Usuario {
         return senha;
     }
 
-    public void setSenha(String password) {
-        this.senha = password;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getDataNascimento() {
@@ -72,5 +76,13 @@ public class Usuario {
 
     public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    public List<Pagamento> getPagamentos() {
+        return pagamentos;
+    }
+
+    public void setPagamentos(List<Pagamento> pagamentos) {
+        this.pagamentos = pagamentos;
     }
 }

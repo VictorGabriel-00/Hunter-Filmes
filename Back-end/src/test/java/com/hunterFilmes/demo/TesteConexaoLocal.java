@@ -1,5 +1,6 @@
 package com.hunterFilmes.demo;
 
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,8 +21,11 @@ class TesteConexaoLocal {
     private DataSource dataSource;
 
     @Test
+    @Order(1)
     void conectarLocalTest() throws SQLException {
-        System.out.println("Testando conexão com Banco de dados");
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Conexão com Banco de Dados Local");
+        System.out.println("========================================");
 
         assertNotNull(dataSource, "Banco de dados não esta configurado");
 
@@ -36,21 +40,28 @@ class TesteConexaoLocal {
 
             assertTrue(url.contains("localhost"), "Banco Não encontrato");
 
+            System.out.println("CONEXÃO COM SUPABASE BEM-SUCEDIDA!");
+            System.out.println("Detalhes da conexão:");
+            System.out.println("Database: " + metaData.getDatabaseProductName());
+            System.out.println("URL: " + url);
+            System.out.println("Driver: " + metaData.getDriverName());
+            System.out.println("Versão: " + metaData.getDriverVersion());
+            System.out.println("Username: " + metaData.getUserName());
+            System.out.println("========================================\n");
 
-            System.out.println("✅ CONEXÃO COM SUPABASE BEM-SUCEDIDA!");
-            System.out.println("📊 Detalhes da conexão:");
-            System.out.println("   Database: " + metaData.getDatabaseProductName());
-            System.out.println("   URL: " + url);
-            System.out.println("   Driver: " + metaData.getDriverName());
-            System.out.println("   Versão: " + metaData.getDriverVersion());
-            System.out.println("   Username: " + metaData.getUserName());
         }
 
 
     }
 
     @Test
+    @Order(2)
     void deveExecutarQueryNoLocal() throws SQLException {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Execução de Query no Banco de Dados Local");
+        System.out.println("========================================");
+
+
         try (Connection connection = dataSource.getConnection();
              var statement = connection.createStatement();
              var resultSet = statement.executeQuery("SELECT current_database(), version()")) {
@@ -64,9 +75,11 @@ class TesteConexaoLocal {
             assertNotNull(version);
             assertTrue(version.contains("PostgreSQL"));
 
-            System.out.println("✅ Query executada com sucesso no Supabase!");
-            System.out.println("   Database atual: " + database);
-            System.out.println("   Versão PostgreSQL: " + version);
+            System.out.println("Query executada com sucesso no Supabase!");
+            System.out.println("Database atual: " + database);
+            System.out.println("Versão PostgreSQL: " + version);
+            System.out.println("========================================");
+
         }
     }
 

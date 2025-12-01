@@ -58,6 +58,9 @@ class SerieServiceTest {
     @DisplayName("Deve criar uma série com sucesso")
     @Order(1)
     void deveCriarSerieComSucesso() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Criar Série");
+        System.out.println("========================================");
 
         when(serieRepositori.save(any(Serie.class))).thenReturn(serie);
 
@@ -70,14 +73,25 @@ class SerieServiceTest {
         assertEquals(8, resultado.getTemporadas());
         verify(serieRepositori, times(1)).save(any(Serie.class));
 
-        System.out.println("Serie Criada com sucesso!!");
-        System.out.println("Nome: " + serie.getTitulo());
+        System.out.println("Série criada com sucesso!");
+        System.out.println("Detalhes da série:");
+        System.out.println("ID: " + resultado.getId());
+        System.out.println("Título: " + resultado.getTitulo());
+        System.out.println("Descrição: " + resultado.getDescricao());
+        System.out.println("Ano: " + resultado.getAnoLancamento());
+        System.out.println("Temporadas: " + resultado.getTemporadas());
+        System.out.println("========================================\n");
     }
 
     @Test
     @DisplayName("Deve listar todas as séries")
     @Order(2)
     void deveListarTodasSeries() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Listar Todas as Séries");
+        System.out.println("========================================");
+
         Serie serie2 = new Serie();
         serie2.setId(UUID.randomUUID());
         serie2.setTitulo("Stranger Things");
@@ -97,12 +111,27 @@ class SerieServiceTest {
         assertEquals(8, resultado.get(0).getTemporadas());
         assertEquals(4, resultado.get(1).getTemporadas());
         verify(serieRepositori, times(1)).findAll();
+
+        System.out.println("Séries listadas com sucesso!");
+        System.out.println("Total de séries: " + resultado.size());
+        for (int i = 0; i < resultado.size(); i++) {
+            System.out.println("\nSérie " + (i + 1) + ":");
+            System.out.println("Título: " + resultado.get(i).getTitulo());
+            System.out.println("Ano: " + resultado.get(i).getAnoLancamento());
+            System.out.println("Temporadas: " + resultado.get(i).getTemporadas());
+        }
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve buscar série por ID com sucesso")
     @Order(3)
     void deveBuscarSeriePorIdComSucesso() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Buscar Série por ID");
+        System.out.println("========================================");
+
         when(serieRepositori.findById(serieId)).thenReturn(Optional.of(serie));
 
         Optional<Serie> resultado = serieService.buscarSeriePorId(serieId);
@@ -112,12 +141,24 @@ class SerieServiceTest {
         assertEquals(serieId, resultado.get().getId());
         assertEquals(8, resultado.get().getTemporadas());
         verify(serieRepositori, times(1)).findById(serieId);
+
+        System.out.println("Série encontrada com sucesso!");
+        System.out.println("Detalhes:");
+        System.out.println("ID buscado: " + serieId);
+        System.out.println("Título: " + resultado.get().getTitulo());
+        System.out.println("Temporadas: " + resultado.get().getTemporadas());
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve retornar Optional vazio quando série não existir")
     @Order(4)
     void deveRetornarOptionalVazioQuandoSerieNaoExistir() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Buscar Série Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -126,12 +167,29 @@ class SerieServiceTest {
         assertFalse(resultado.isPresent());
         assertTrue(resultado.isEmpty());
         verify(serieRepositori, times(1)).findById(idInexistente);
+
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Optional vazio,série não encontrada");
+        System.out.println("========================================\n");
+
+
     }
 
     @Test
     @DisplayName("Deve atualizar série com sucesso")
     @Order(5)
     void deveAtualizarSerieComSucesso() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Atualizar Série");
+        System.out.println("========================================");
+
+        System.out.println("Dados anteriores:");
+        System.out.println("Título: " + serie.getTitulo());
+        System.out.println("Ano: " + serie.getAnoLancamento());
+        System.out.println("Temporadas: " + serie.getTemporadas() + "\n");
+
         SerieDto serieDtoAtualizada = new SerieDto(
                 "Breaking Bad",
                 "Professor",
@@ -157,12 +215,26 @@ class SerieServiceTest {
         assertEquals(6, resultado.get().getTemporadas());
         verify(serieRepositori, times(1)).findById(serieId);
         verify(serieRepositori, times(1)).save(any(Serie.class));
+
+        System.out.println("Série atualizada com sucesso!");
+        System.out.println("Novos dados:");
+        System.out.println("Título: " + resultado.get().getTitulo());
+        System.out.println("Ano: " + resultado.get().getAnoLancamento());
+        System.out.println("Temporadas: " + resultado.get().getTemporadas());
+        System.out.println("========================================\n");
+
+
     }
 
     @Test
     @DisplayName("Não deve atualizar série quando ID não existir")
     @Order(6)
     void naoDeveAtualizarSerieQuandoIdNaoExistir() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Atualizar Série Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -171,26 +243,51 @@ class SerieServiceTest {
         assertFalse(resultado.isPresent());
         verify(serieRepositori, times(1)).findById(idInexistente);
         verify(serieRepositori, never()).save(any(Serie.class));
+
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Atualização não realizada");
+        System.out.println("Motivo: Série não encontrada");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve deletar série com sucesso")
     @Order(7)
     void deveDeletarSerieComSucesso() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Deletar Série");
+        System.out.println("========================================");
+
         when(serieRepositori.findById(serieId)).thenReturn(Optional.of(serie));
         doNothing().when(serieRepositori).delete(serie);
+
+        System.out.println("Série a ser deletada:");
+        System.out.println("ID: " + serieId);
+        System.out.println("Título: " + serie.getTitulo() + "\n");
 
         boolean resultado = serieService.deletarSerie(serieId);
 
         assertTrue(resultado);
         verify(serieRepositori, times(1)).findById(serieId);
         verify(serieRepositori, times(1)).delete(serie);
+
+        System.out.println("✅ Série deletada com sucesso!");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Não deve deletar série quando ID não existir")
     @Order(8)
     void naoDeveDeletarSerieQuandoIdNaoExistir() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Deletar Série Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -199,24 +296,43 @@ class SerieServiceTest {
         assertFalse(resultado);
         verify(serieRepositori, times(1)).findById(idInexistente);
         verify(serieRepositori, never()).delete(any(Serie.class));
+
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Deleção não realizada");
+        System.out.println("Motivo: Série não encontrada");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve verificar se série existe")
     @Order(9)
     void deveVerificarSeSerieExiste() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Existência da Série");
+        System.out.println("========================================");
         when(serieRepositori.existsById(serieId)).thenReturn(true);
 
         boolean resultado = serieService.serieExiste(serieId);
 
         assertTrue(resultado);
         verify(serieRepositori, times(1)).existsById(serieId);
+
+        System.out.println("Verificação realizada!");
+        System.out.println("ID: " + serieId);
+        System.out.println("Existe: SIM");
+        System.out.println("========================================\n");
     }
 
     @Test
     @DisplayName("Deve retornar false quando série não existe")
     @Order(10)
     void deveRetornarFalseQuandoSerieNaoExiste() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Série Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(serieRepositori.existsById(idInexistente)).thenReturn(false);
 
@@ -224,12 +340,20 @@ class SerieServiceTest {
 
         assertFalse(resultado);
         verify(serieRepositori, times(1)).existsById(idInexistente);
+
+        System.out.println("Verificação realizada!");
+        System.out.println("ID: " + idInexistente);
+        System.out.println("Existe: NÃO");
+        System.out.println("========================================\n");
     }
 
     @Test
     @DisplayName("Nao deve criar serie se a temporada for igual a 0")
     @Order(11)
     void naoCriarSerieCom0Temporadas() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Não Criar Série com 0 Temporadas");
+        System.out.println("========================================");
 
         SerieDto serieComMuitasTemporadas = new SerieDto(
                 "Grey's Anatomy",
@@ -253,12 +377,23 @@ class SerieServiceTest {
         assertEquals(0, resultado.getTemporadas());
         assertEquals("Grey's Anatomy", resultado.getTitulo());
         verify(serieRepositori, times(1)).save(any(Serie.class));
+
+        System.out.println("Atenção: Não é possivel cria Série com 0 temporadas!");
+        System.out.println("Detalhes:");
+        System.out.println("Título: " + resultado.getTitulo());
+        System.out.println("Temporadas: " + resultado.getTemporadas() + " (INVÁLIDO!)");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Nao deve criar serie se a temporada for igual a 0")
     @Order(12)
     void naoCriarComTemporadaNegativa() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Não Criar Série com Temporadas Negativas");
+        System.out.println("========================================");
 
         SerieDto serieComMuitasTemporadas = new SerieDto(
                 "B99",
@@ -282,6 +417,13 @@ class SerieServiceTest {
         assertEquals(-1, resultado.getTemporadas());
         assertEquals("B99", resultado.getTitulo());
         verify(serieRepositori, times(1)).save(any(Serie.class));
+
+        System.out.println("Atenção: Não é possivel cria Série com temporadas Negativas!");
+        System.out.println("Detalhes:");
+        System.out.println("Título: " + resultado.getTitulo());
+        System.out.println("Temporadas: " + resultado.getTemporadas() + " (NEGATIVO!)");
+        System.out.println("========================================\n");
+
     }
 
 

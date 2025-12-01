@@ -22,7 +22,10 @@ class TesteConexaoSupabase {
     @Test
     @Order(1)
     void conectarSupabaseTest() throws SQLException {
-        System.out.println("Testando conexão com Banco de dados");
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Conexão com Banco de Dados Supabase");
+        System.out.println("========================================");
 
         assertNotNull(dataSource, "Banco de dados não esta configurado");
 
@@ -39,13 +42,15 @@ class TesteConexaoSupabase {
             assertTrue(url.contains("aws-1-sa-east-1"), "Região incorreta");
             assertTrue(url.contains("pooler.supabase.com"), "Não está usando o pooler");
 
-            System.out.println("✅ CONEXÃO COM SUPABASE BEM-SUCEDIDA!");
-            System.out.println("📊 Detalhes da conexão:");
-            System.out.println("   Database: " + metaData.getDatabaseProductName());
-            System.out.println("   URL: " + url);
-            System.out.println("   Driver: " + metaData.getDriverName());
-            System.out.println("   Versão: " + metaData.getDriverVersion());
-            System.out.println("   Username: " + metaData.getUserName() );
+            System.out.println("CONEXÃO COM SUPABASE BEM-SUCEDIDA!");
+            System.out.println("Detalhes da conexão:");
+            System.out.println("Database: " + metaData.getDatabaseProductName());
+            System.out.println("URL: " + url);
+            System.out.println("Driver: " + metaData.getDriverName());
+            System.out.println("Versão: " + metaData.getDriverVersion());
+            System.out.println("Username: " + metaData.getUserName() );
+            System.out.println("========================================\n");
+
         }
 
     }
@@ -53,6 +58,10 @@ class TesteConexaoSupabase {
     @Test
     @Order(2)
     void deveExecutarQueryNoSupabase() throws SQLException {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Execução de Query no Banco de Dados Supabase");
+        System.out.println("========================================");
+
         try (Connection connection = dataSource.getConnection();
              var statement = connection.createStatement();
              var resultSet = statement.executeQuery("SELECT current_database(), version()")) {
@@ -66,9 +75,11 @@ class TesteConexaoSupabase {
             assertNotNull(version);
             assertTrue(version.contains("PostgreSQL"));
 
-            System.out.println("✅ Query executada com sucesso no Supabase!");
-            System.out.println("   Database atual: " + database);
-            System.out.println("   Versão PostgreSQL: " + version + "\n");
+            System.out.println("Query executada com sucesso no Supabase!");
+            System.out.println("Database atual: " + database);
+            System.out.println("Versão PostgreSQL: " + version + "\n");
+            System.out.println("========================================");
+
         }
     }
 }

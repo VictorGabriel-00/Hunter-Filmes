@@ -1,6 +1,7 @@
 package com.hunterFilmes.demo.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -22,6 +23,7 @@ Pagamento {
     private Plano plano;
     @ManyToOne
     @JoinColumn(name = "id_usuario")
+    @JsonBackReference
     private Usuario usuario;
     private float valor;
     private LocalDateTime dataPagamento;

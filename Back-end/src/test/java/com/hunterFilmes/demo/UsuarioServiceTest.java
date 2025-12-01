@@ -59,6 +59,9 @@ class UsuarioServiceTest {
     @DisplayName("Deve criar um usuário com sucesso")
     @Order(1)
     void deveCriarUsuarioComSucesso() {
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Criar Usuário");
+        System.out.println("========================================");
         // faz a preparação do que vai acontecer no teste
         when(usuarioRepositori.save(any(Usuario.class))).thenReturn(usuario);
 
@@ -73,7 +76,8 @@ class UsuarioServiceTest {
         verify(usuarioRepositori, times(1)).save(any(Usuario.class));
 
         // o resultado do teste
-        System.out.println("Usuario criado com sucesso!!");
+        System.out.println("Usuário criado com sucesso!");
+        System.out.println("Detalhes do usuário:");
         System.out.println("Nome: " +  usuario.getNome());
         System.out.println("Email: " +  usuario.getEmail());
         System.out.println("Senha: " +  usuario.getSenha());
@@ -85,6 +89,11 @@ class UsuarioServiceTest {
     @DisplayName("Deve listar todos os usuários")
     @Order(2)
     void deveListarTodosUsuarios() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Listar Todos os Usuários");
+        System.out.println("========================================");
+
         Usuario usuario2 = new Usuario();
         usuario2.setId(UUID.randomUUID());
         usuario2.setNome("Raica Lira");
@@ -101,9 +110,15 @@ class UsuarioServiceTest {
         assertEquals("Raica Lira", resultado.get(1).getNome());
         verify(usuarioRepositori, times(1)).findAll();
 
-        System.out.println("Usuario listado com sucesso!!");
-        System.out.println("Usuario01: " +  usuarios.get(0).getNome());
-        System.out.println("Usuario02: " +  usuarios.get(1).getNome());
+        System.out.println("Usuários listados com sucesso!");
+        System.out.println("Total de usuários: " + resultado.size());
+        for (int i = 0; i < resultado.size(); i++) {
+            System.out.println("\nUsuário " + (i + 1) + ":");
+            System.out.println("Nome: " + resultado.get(i).getNome());
+            System.out.println("Email: " + resultado.get(i).getEmail());
+        }
+        System.out.println("========================================\n");
+
 
     }
 
@@ -111,6 +126,11 @@ class UsuarioServiceTest {
     @DisplayName("Deve buscar usuário por ID com sucesso")
     @Order(3)
     void deveBuscarUsuarioPorIdComSucesso() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Buscar Usuário por ID");
+        System.out.println("========================================");
+
         when(usuarioRepositori.findById(usuarioId)).thenReturn(Optional.of(usuario));
 
         Optional<Usuario> resultado = usuarioService.buscarUsuarioPorId(usuarioId);
@@ -120,9 +140,12 @@ class UsuarioServiceTest {
         assertEquals(usuarioId, resultado.get().getId());
         verify(usuarioRepositori, times(1)).findById(usuarioId);
 
-        System.out.println("Consulta pelo Id realizada com sucesso!!");
-        System.out.println("Id: " + usuarioId);
-        System.out.println("Nome: " + usuario.getNome());
+        System.out.println("Usuário encontrado com sucesso!");
+        System.out.println("Detalhes:");
+        System.out.println("ID buscado: " + usuarioId);
+        System.out.println("Nome: " + resultado.get().getNome());
+        System.out.println("Email: " + resultado.get().getEmail());
+        System.out.println("========================================\n");
 
     }
 
@@ -130,6 +153,11 @@ class UsuarioServiceTest {
     @DisplayName("Deve retornar Optional vazio quando usuário não existir")
     @Order(4)
     void deveRetornarOptionalVazioQuandoUsuarioNaoExistir() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Buscar Usuário Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -138,12 +166,22 @@ class UsuarioServiceTest {
         assertFalse(resultado.isPresent());
         assertTrue(resultado.isEmpty());
         verify(usuarioRepositori, times(1)).findById(idInexistente);
+
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Optional vazio (usuário não encontrado)");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve atualizar usuário com sucesso")
     @Order(5)
     void deveAtualizarUsuarioComSucesso() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Atualizar Usuário");
+        System.out.println("========================================");
 
         System.out.println("Usuario antigo");
         System.out.println("Id: " + usuarioId);
@@ -177,12 +215,14 @@ class UsuarioServiceTest {
         verify(usuarioRepositori, times(1)).findById(usuarioId);
         verify(usuarioRepositori, times(1)).save(any(Usuario.class));
 
-        System.out.println("Usuario Atualizado com sucesso!!");
+        System.out.println("Usuário atualizado com sucesso!");
+        System.out.println("Novos dados:");
         System.out.println("Id: " + usuarioId);
-        System.out.println("Nome: " + usuario.getNome());
-        System.out.println("Email: " + usuario.getEmail());
-        System.out.println("Senha: " + usuario.getSenha());
-        System.out.println("Data de nascimento: " + usuario.getDataNascimento());
+        System.out.println("Nome: " + resultado.get().getNome());
+        System.out.println("Email: " + resultado.get().getEmail());
+        System.out.println("Senha: " + resultado.get().getSenha());
+        System.out.println("Data de nascimento: " + resultado.get().getDataNascimento());
+
 
     }
 
@@ -190,6 +230,11 @@ class UsuarioServiceTest {
     @DisplayName("Não deve atualizar usuário quando ID não existir")
     @Order(6)
     void naoDeveAtualizarUsuarioQuandoIdNaoExistir() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Atualizar Usuário Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -199,7 +244,11 @@ class UsuarioServiceTest {
         verify(usuarioRepositori, times(1)).findById(idInexistente);
         verify(usuarioRepositori, never()).save(any(Usuario.class));
 
-        System.out.println("Id nao encontrado!!");
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Atualização não realizada");
+        System.out.println("Motivo: Usuário não encontrado");
+        System.out.println("========================================\n");
 
     }
 
@@ -207,6 +256,15 @@ class UsuarioServiceTest {
     @DisplayName("Deve deletar usuário com sucesso")
     @Order(7)
     void deveDeletarUsuarioComSucesso() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Deletar Usuário");
+        System.out.println("========================================");
+
+        System.out.println("Usuário a ser deletado:");
+        System.out.println("ID: " + usuarioId);
+        System.out.println("Nome: " + usuario.getNome() + "\n");
+
         when(usuarioRepositori.findById(usuarioId)).thenReturn(Optional.of(usuario));
         doNothing().when(usuarioRepositori).delete(usuario);
 
@@ -216,44 +274,66 @@ class UsuarioServiceTest {
         verify(usuarioRepositori, times(1)).findById(usuarioId);
         verify(usuarioRepositori, times(1)).delete(usuario);
 
-        System.out.println("Usuario deletado com sucesso!!");
-
+        System.out.println("Usuário deletado com sucesso!");
+        System.out.println("========================================\n");
     }
 
     @Test
     @DisplayName("Não deve deletar usuário quando ID não existir")
     @Order(8)
     void naoDeveDeletarUsuarioQuandoIdNaoExistir() {
-        // Arrange
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Deletar Usuário Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.findById(idInexistente)).thenReturn(Optional.empty());
 
-        // Act
         boolean resultado = usuarioService.deletarUsuario(idInexistente);
 
-        // Assert
         assertFalse(resultado);
         verify(usuarioRepositori, times(1)).findById(idInexistente);
         verify(usuarioRepositori, never()).delete(any(Usuario.class));
+
+        System.out.println("Comportamento correto!");
+        System.out.println("ID buscado: " + idInexistente);
+        System.out.println("Resultado: Deleção não realizada");
+        System.out.println("Motivo: Usuário não encontrado");
+        System.out.println("========================================\n");
+
     }
 
     @Test
     @DisplayName("Deve verificar se usuário existe")
     @Order(9)
     void deveVerificarSeUsuarioExiste() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Existência do Usuário");
+        System.out.println("========================================");
+
         when(usuarioRepositori.existsById(usuarioId)).thenReturn(true);
 
         boolean resultado = usuarioService.usuarioExiste(usuarioId);
 
         assertTrue(resultado);
         verify(usuarioRepositori, times(1)).existsById(usuarioId);
-        System.out.println("Usuario existe!!");
+        System.out.println("Verificação realizada!");
+        System.out.println("ID: " + usuarioId);
+        System.out.println("Existe: SIM");
+        System.out.println("========================================\n");
     }
 
     @Test
     @DisplayName("Deve retornar false quando usuário não existe")
     @Order(10)
     void deveRetornarFalseQuandoUsuarioNaoExiste() {
+
+        System.out.println("\n========================================");
+        System.out.println("TESTE: Verificar Usuário Inexistente");
+        System.out.println("========================================");
+
         UUID idInexistente = UUID.randomUUID();
         when(usuarioRepositori.existsById(idInexistente)).thenReturn(false);
 
@@ -261,6 +341,12 @@ class UsuarioServiceTest {
 
         assertFalse(resultado);
         verify(usuarioRepositori, times(1)).existsById(idInexistente);
+
+
+        System.out.println("Verificação realizada!");
+        System.out.println("ID: " + idInexistente);
+        System.out.println("Existe: NÃO");
+        System.out.println("========================================\n");
 
     }
 }

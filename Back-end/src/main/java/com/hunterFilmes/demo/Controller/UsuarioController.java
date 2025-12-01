@@ -1,6 +1,7 @@
 package com.hunterFilmes.demo.Controller;
 
 import com.hunterFilmes.demo.Dto.UsuarioDto;
+import com.hunterFilmes.demo.Dto.UsuarioResponseDto;
 import com.hunterFilmes.demo.Model.Usuario;
 import com.hunterFilmes.demo.Repositori.UsuarioRepositori;
 import com.hunterFilmes.demo.Service.UsuarioService;
@@ -36,6 +37,15 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getUsuarioById(@PathVariable(value = "id") UUID id) {
+        Optional<UsuarioResponseDto> usuarioOp = usuarioService.buscarUsuarioComPlano(id);
+        if (usuarioOp.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioOp.get());
+    }
+
+    @GetMapping("/simples/{id}")
+    public ResponseEntity<Object> getUsuarioSimplesById(@PathVariable(value = "id") UUID id) {
         Optional<Usuario> usuarioOp = usuarioService.buscarUsuarioPorId(id);
         if (usuarioOp.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado");
