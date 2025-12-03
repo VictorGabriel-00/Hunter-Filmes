@@ -274,7 +274,7 @@ class SerieServiceTest {
         verify(serieRepositori, times(1)).findById(serieId);
         verify(serieRepositori, times(1)).delete(serie);
 
-        System.out.println("✅ Série deletada com sucesso!");
+        System.out.println("Série deletada com sucesso!");
         System.out.println("========================================\n");
 
     }
